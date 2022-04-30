@@ -28,9 +28,34 @@
               <button type="button" class="btn btn-secondary">Temas</button>
           </div>
           <div class="p-2 bd-highlight">
-              <button type="button" class="btn btn-secondary" onclick="showUserCreateBox()">Peças</button>
+              <button type="button" class="btn btn-secondary" onclick="location.href='consultarPecas.html'">Peças</button>
           </div>
       </div>
+  </div>
+  <div class="container">
+    <div class="d-flex bd-highlight mb-3">
+      <div class="me-auto p-2 bd-highlight"><h2>Peças</div>
+      <div class="p-2 bd-highlight">
+        <button type="button" class="btn btn-secondary" onclick="showPieceCreate()">Criar peça</button>
+      </div>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Logo</th>
+            <th scope="col">Nome Tema</th>
+            <th scope="col">Patrocinador</th>
+          </tr>
+        </thead>
+        <tbody id="mytable">
+          <tr>
+            <th scope="row" colspan="5">Loading...</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </body>
 
