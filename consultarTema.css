@@ -8,9 +8,9 @@
   }
   
   td {
-      line-height: 3rem;
+      line-height: 6rem;
   }
 
-   img {
-    border-radius: 50%;
+  img {
+    border-radius: 0%;
   }
