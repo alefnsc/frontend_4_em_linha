@@ -9,9 +9,9 @@ function loadTable() {
         const objects = JSON.parse(this.responseText);
         for (let object of objects) {
           trHTML += '<tr>'; 
-          trHTML += '<td><img width="50px" src="'+object['avatar']+'" class="avatar"></td>';
-          trHTML += '<td>'+object['fname']+'</td>';
-          trHTML += '<td>'+object['username']+'</td>';
+          trHTML += '<td><img width="50px" src="'+object['urlLogo']+'" class="avatar"></td>';
+          trHTML += '<td>'+object['nome']+'</td>';
+          trHTML += '<td>'+object['email']+'</td>';
           trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showUserEditBox('+object['id']+')">Edit</button>';
           trHTML += '<button type="button" class="btn btn-outline-danger" onclick="userDelete('+object['id']+')">Del</button></td>';
           trHTML += "</tr>";
@@ -85,16 +85,17 @@ function showUserEditBox(id) {
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         const objects = JSON.parse(this.responseText);
-        const user = objects['user'];
+        const user = objects;
         console.log(user);
         Swal.fire({
           title: 'Edit User',
           html:
             '<input id="id" type="hidden" value='+user['id']+'>' +
-            '<input id="fname" class="swal2-input" placeholder="First" value="'+user['fname']+'">' +
-            '<input id="lname" class="swal2-input" placeholder="Last" value="'+user['lname']+'">' +
-            '<input id="username" class="swal2-input" placeholder="Username" value="'+user['username']+'">' +
-            '<input id="email" class="swal2-input" placeholder="Email" value="'+user['email']+'">',
+            '<input id="nome" class="swal2-input" placeholder="Nome" value="'+user['nome']+'">' +
+            '<input id="website" class="swal2-input" placeholder="Website" value="'+user['website']+'">' +
+            '<input id="email" class="swal2-input" placeholder="Email" value="'+user['email']+'">' +
+            '<input id="celular" class="swal2-input" placeholder="Celular" value="'+user['celular']+'">' +
+            '<input id="urlLogo" class="swal2-input" placeholder="UrlLogo" value="'+user['urlLogo']+'">',
           focusConfirm: false,
           preConfirm: () => {
             userEdit();
