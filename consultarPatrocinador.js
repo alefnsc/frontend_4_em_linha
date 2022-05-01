@@ -1,6 +1,6 @@
 function loadTable() {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://www.mecallapi.com/api/users");
+    xhttp.open("GET", "https://localhost:44347/api/Patrocinador");
     xhttp.send();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -63,7 +63,7 @@ loadTable();
 
 function userDelete(id) {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("DELETE", "https://www.mecallapi.com/api/users/delete");
+    xhttp.open("DELETE", "https://localhost:44347/api/Patrocinador/"+id);
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify({ 
       "id": id
@@ -80,7 +80,7 @@ function userDelete(id) {
 function showUserEditBox(id) {
     console.log(id);
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://www.mecallapi.com/api/users/"+id);
+    xhttp.open("GET", "https://localhost:44347/api/Patrocinador/"+id);
     xhttp.send();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -107,17 +107,18 @@ function showUserEditBox(id) {
 
 function userEdit() {
     const id = document.getElementById("id").value;
-    const fname = document.getElementById("fname").value;
-    const lname = document.getElementById("lname").value;
-    const username = document.getElementById("username").value;
+    const nome = document.getElementById("nome").value;
+    const website = document.getElementById("website").value;
     const email = document.getElementById("email").value;
+    const celular = document.getElementById("celular").value;
+    const urlLogo = document.getElementById("urlLogo").value;
       
     const xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "https://www.mecallapi.com/api/users/update");
+    xhttp.open("PUT", "https://localhost:44347/api/Patrocinador/");
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify({ 
-      "id": id, "fname": fname, "lname": lname, "username": username, "email": email, 
-      "avatar": "https://www.mecallapi.com/users/cat.png"
+      "id": id, "nome": nome, "website": website, "email": email, "celular": celular, 
+      "urlLogo": urlLogo
     }));
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
