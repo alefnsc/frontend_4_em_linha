@@ -63,11 +63,7 @@ id="rd-form-joq3m2m5" class="bricks--component bricks-form rd-form">
         <div class="bricks-form__field">
           <select class="bricks-form__input required js-url js-field-url" id="patrocinador" name="cf_patrocinador" type="text" data-use-type="STRING"
             required="required" form="form">
-            <option >Selecione o Patrocinador:</option>
-            <option>XXXX</option>
-            <option>YYYY</option>
-            <option>ZZZZ</option>
-            <option>PPPP</option>
+            <option value="" disabled selected>Selecione o Patrocinador:</option>
           </select>
         </div>
 
@@ -99,6 +95,11 @@ id="rd-form-joq3m2m5" class="bricks--component bricks-form rd-form">
   </div>
   </form>
   </div>
+
+  <div>
+    <button onclick="myFunction()">Try it</button>
+  </div>
+
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script type="text/javascript"
     src="https://d335luupugsy2.cloudfront.net/js/jquery.validate/1.9/jquery.validate.min.js"></script>
@@ -119,9 +120,52 @@ id="rd-form-joq3m2m5" class="bricks--component bricks-form rd-form">
   </script>
 
   <script type="text/javascript"
-    src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/b745a3dc-d447-4c97-b6e8-5f6d616cd5e4-loader.js"></script>
+    src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/b745a3dc-d447-4c97-b6e8-5f6d616cd5e4-loader.js">
+  </script>
 
+<script>
+  const xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "https://www.mecallapi.com/api/users");
+  xhttp.send();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
+      var trHTML = ''; 
+      const objects = JSON.parse(this.responseText);
+      for (let object of objects) {
+        const option = new Option(object['fname'], object['id']);
+        const element = document.querySelector("#patrocinador");
+        element.add(option, undefined)
+      }
+    }
+  };
 
+  function myFunction() {
+    var e = document.getElementById("patrocinador");
+    var result = e.options[e.selectedIndex].value;
+    const fname = document.getElementById("rd-text_field-kfzdhxoh").value;
+    const lname = result;
+    const username = "username";
+    const email = "email";
+      
+    const xhttp2 = new XMLHttpRequest();
+    xhttp2.open("POST", "https://www.mecallapi.com/api/users/create");
+    xhttp2.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp2.send(JSON.stringify({ 
+      "fname": fname, "lname": lname, "username": username, "email": email, 
+      "avatar": document.getElementById("rd-url_field-kfzdhxoi").value
+    }));
+    xhttp2.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        const objects = JSON.parse(this.responseText);
+        Swal.fire(objects['message']);
+      }
+    };
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 
 
   <style type="text/css" rel="stylesheet">
