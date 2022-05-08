@@ -1,6 +1,6 @@
 function loadTable() {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://www.mecallapi.com/api/users");
+    xhttp.open("GET", "https://localhost:44347/api/Tema/");
     xhttp.send();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -8,10 +8,13 @@ function loadTable() {
         var trHTML = ''; 
         const objects = JSON.parse(this.responseText);
         for (let object of objects) {
+
+          const nomePatrocinador = buscarNomePatrocinador(object['idPatrocinador']);
+
           trHTML += '<tr>'; 
-          trHTML += '<td><img width="150px"" src="'+object['avatar']+'" class="avatar"></td>';
-          trHTML += '<td>'+object['fname']+'</td>';
-          trHTML += '<td>'+object['username']+'</td>';
+          trHTML += '<td><img width="150px"" src="'+object['urlTabuleiro']+'" class="avatar"></td>';
+          trHTML += '<td>'+object['nome']+'</td>';     //alterar
+          trHTML += '<td>'+nomePatrocinador+'</td>';  //alterar
           trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showUserEditBox('+object['id']+')">Edit</button>';
           trHTML += '<button type="button" class="btn btn-outline-danger" onclick="userDelete('+object['id']+')">Del</button></td>';
           trHTML += "</tr>";
@@ -23,22 +26,39 @@ function loadTable() {
 
 loadTable();
 
+function buscarNomePatrocinador(id){
+  console.log(id);
+  const xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "https://localhost:44347/api/Patrocinador"+id);
+  xhttp.send();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      const objects = JSON.parse(this.responseText);
+      return objects['nome'];
+    }
+  };
+}
+
+
 function showUserCreateBox() {
     Swal.fire({
-      title: 'Create user',
+      title: 'Criar Tema',
       html:
-        '<input id="id" type="hidden">' +
-        '<input id="fname" class="swal2-input" placeholder="First">' +
-        '<input id="lname" class="swal2-input" placeholder="Last">' +
-        '<input id="username" class="swal2-input" placeholder="Username">' +
-        '<input id="email" class="swal2-input" placeholder="Email">' +
-        '<select id="patrocinador" class="swal2-input" type="text" data-use-type="STRING">' +
+        '<input id="Id" type="hidden">' +
+        '<input id="Nome" class="swal2-input" placeholder="Nome">' +
+        '<input id="UrlTabuleiro" class="swal2-input" placeholder="Url">' +
+        '<br><br><br><p id="mensagemPeca">Para a criação de um Tema,</p> <p>é necesário adicionar duas Peças</p>' +
+        '<input id="NomePeca1" class="swal2-input" placeholder="Nome Peça 1">' +
+        '<input id="UrlPeca1" class="swal2-input" placeholder="URL Peça 1">' +
+        '<input id="NomePeca2" class="swal2-input" placeholder="Nome Peça 2">' +
+        '<input id="NomePeca2" class="swal2-input" placeholder="URL Peça 2">' +
+        '<select id="idPatrocinador" class="swal2-input" type="text" data-use-type="STRING">' +
         '<option value="" disabled selected>Selecione o Patrocinador:</option>' +
         '</select>',
       focusConfirm: false,
       didOpen: () => {
         const xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "https://www.mecallapi.com/api/users");
+        xhttp.open("GET", "https://localhost:44347/api/Patrocinador/");
         xhttp.send();
         xhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
@@ -46,8 +66,8 @@ function showUserCreateBox() {
             var trHTML = ''; 
             const objects = JSON.parse(this.responseText);
             for (let object of objects) {
-              const option = new Option(object['fname'], object['id']);
-              const element = document.querySelector("#patrocinador");
+              const option = new Option(object['nome'], object['Id']);
+              const element = document.querySelector("#idPatrocinador");
               element.add(option, undefined)
             }
           }
@@ -60,19 +80,21 @@ function showUserCreateBox() {
 }
 
 function userCreate() {
-    const fname = document.getElementById("fname").value;
-    const lname = document.getElementById("lname").value;
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-      
-    alert(document.getElementById("patrocinador").value)
+    const nome = document.getElementById("Nome").value;
+    const urlTabuleiro = document.getElementById("UrlTabuleiro").value;
+    const idPatrocinador = document.getElementById("idPatrocinador").value;
+    const nomePeca1 = document.getElementById("NomePeca1").value;
+    const urlPeca1 = document.getElementById("UrlPeca1").value;
+    const nomePeca2 = document.getElementById("NomePeca2").value;
+    const urlPeca2 = document.getElementById("NomePeca2").value;
     
     const xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "https://www.mecallapi.com/api/users/create");
+    xhttp.open("POST", "https://localhost:44347/api/Tema/");
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify({ 
-      "fname": fname, "lname": lname, "username": username, "email": email, 
-      "avatar": "https://i.pinimg.com/736x/0d/d2/0e/0dd20ebf2a8737a2d9740be6d5877b8b.jpg"
+      "nome": nome, "urlTabuleiro": urlTabuleiro, "idPatrocinador": idPatrocinador,
+      "nomePeca1": nomePeca1, "urlPeca1": urlPeca1,
+      "nomePeca2": nomePeca2, "urlPeca2": urlPeca2
     }));
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -85,7 +107,7 @@ function userCreate() {
 
 function userDelete(id) {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("DELETE", "https://www.mecallapi.com/api/users/delete");
+    xhttp.open("DELETE", "https://localhost:44347/api/Tema/"+id);
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify({ 
       "id": id
@@ -102,22 +124,40 @@ function userDelete(id) {
 function showUserEditBox(id) {
     console.log(id);
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://www.mecallapi.com/api/users/"+id);
+    xhttp.open("GET", "https://localhost:44347/api/Tema/"+id);
     xhttp.send();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         const objects = JSON.parse(this.responseText);
-        const user = objects['user'];
+        const user = objects;
         console.log(user);
         Swal.fire({
           title: 'Edit User',
           html:
-            '<input id="id" type="hidden" value='+user['id']+'>' +
-            '<input id="fname" class="swal2-input" placeholder="First" value="'+user['fname']+'">' +
-            '<input id="lname" class="swal2-input" placeholder="Last" value="'+user['lname']+'">' +
-            '<input id="username" class="swal2-input" placeholder="Username" value="'+user['username']+'">' +
-            '<input id="email" class="swal2-input" placeholder="Email" value="'+user['email']+'">',
+            '<input id="Id" type="hidden" value='+user['id']+'>' +
+            '<input id="Nome" class="swal2-input" placeholder="First" value="'+user['nome']+'">' +
+            '<input id="UrlTabuleiro" class="swal2-input" placeholder="Last" value="'+user['urlTabuleiro']+'">' +
+            '<select id="patrocinadores" class="swal2-input" type="text" data-use-type="STRING">' +
+            '<option value="" disabled selected>Selecione um Patrocinador</option>' +
+            '</select>',
           focusConfirm: false,
+          didOpen: () => {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "https://localhost:44347/api/Patrocinador/"); //url get Patrocinadores
+            xhttp.send();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                var trHTML = ''; 
+                const objects = JSON.parse(this.responseText);
+                for (let object of objects) {
+                  const option = new Option(object['nome'], object['id']);
+                  const element = document.querySelector("#patrocinadores");
+                  element.add(option, undefined)
+                }
+              }
+            };
+          },
           preConfirm: () => {
             userEdit();
           }
@@ -127,18 +167,16 @@ function showUserEditBox(id) {
 }
 
 function userEdit() {
-    const id = document.getElementById("id").value;
-    const fname = document.getElementById("fname").value;
-    const lname = document.getElementById("lname").value;
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-      
+    const Id = document.getElementById("Id").value;
+    const Nome = document.getElementById("Nome").value;
+    const UrlTabuleiro = document.getElementById("UrlTabuleiro").value;
+    const idPatrocinador = document.getElementById("patrocinadores").value;
+
     const xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "https://www.mecallapi.com/api/users/update");
+    xhttp.open("PUT", "https://localhost:44347/api/Tema/");
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify({ 
-      "id": id, "fname": fname, "lname": lname, "username": username, "email": email, 
-      "avatar": "https://www.mecallapi.com/users/cat.png"
+      "id": Id, "nome": Nome, "urlTabuleiro": UrlTabuleiro, "idPatrocinador": idPatrocinador
     }));
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {

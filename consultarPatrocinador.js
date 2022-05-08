@@ -11,7 +11,7 @@ function loadTable() {
           trHTML += '<tr>'; 
           trHTML += '<td><img width="50px" src="'+object['urlLogo']+'" class="avatar"></td>';
           trHTML += '<td>'+object['nome']+'</td>';
-          trHTML += '<td>'+object['email']+'</td>';
+          trHTML += '<td>'+object['website']+'</td>';
           trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showUserEditBox('+object['id']+')">Edit</button>';
           trHTML += '<button type="button" class="btn btn-outline-danger" onclick="userDelete('+object['id']+')">Del</button></td>';
           trHTML += "</tr>";
@@ -22,6 +22,65 @@ function loadTable() {
 }
 
 loadTable();
+
+function showUserCreateBox() {
+    Swal.fire({
+      title: 'Criar Patrocinador',
+      html:
+        '<input id="Id" type="hidden">' +
+        '<input id="Nome" class="swal2-input" placeholder="Nome">' +
+        '<input id="Email" class="swal2-input" placeholder="E-mail">' +
+        '<input id="UrlLogo" class="swal2-input" placeholder="Url">' +
+        '<input id="Website" class="swal2-input" placeholder="Website">' +
+        '<input id="Celular" class="swal2-input" placeholder="Celular">',
+
+      focusConfirm: false,
+      didOpen: () => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "https://localhost:44347/api/Patrocinador/");
+        xhttp.send();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            var trHTML = ''; 
+            const objects = JSON.parse(this.responseText);
+            for (let object of objects) {
+              const option = new Option(object['nome'], object['id']);
+              const element = document.querySelector("#patrocinador");
+              element.add(option, undefined)
+            }
+          }
+        };
+      },  
+      preConfirm: () => {
+        userCreate();
+      }
+    })
+}
+
+function userCreate() {
+    const Nome = document.getElementById("Nome").value;
+    const Email = document.getElementById("Email").value;
+    const UrlLogo = document.getElementById("UrlLogo").value;
+    const Website = document.getElementById("Website").value;
+    const Celular = document.getElementById("Celular").value;
+
+    alert(document.getElementById("patrocinador").value)
+    
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "https://localhost:44347/api/Patrocinador/");
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send(JSON.stringify({ 
+      "nome": Nome, "email": Email,"urlLogo": UrlLogo, "website": Website, "celular": Celular
+    }));
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        const objects = JSON.parse(this.responseText);
+        Swal.fire(objects['message']);
+        loadTable();
+      }
+    };
+}
 
 // function showUserCreateBox() {
 //     Swal.fire({
@@ -46,7 +105,7 @@ loadTable();
 //     const email = document.getElementById("email").value;
       
 //     const xhttp = new XMLHttpRequest();
-//     xhttp.open("POST", "https://www.mecallapi.com/api/users/create");
+//     xhttp.open("POST", "https://localhost:44347/api/Patrocinador/");
 //     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 //     xhttp.send(JSON.stringify({ 
 //       "fname": fname, "lname": lname, "username": username, "email": email, 
@@ -62,69 +121,69 @@ loadTable();
 // }
 
 function userDelete(id) {
-    const xhttp = new XMLHttpRequest();
-    xhttp.open("DELETE", "https://localhost:44347/api/Patrocinador/"+id);
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(JSON.stringify({ 
-      "id": id
-    }));
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4) {
-        const objects = JSON.parse(this.responseText);
-        Swal.fire(objects['message']);
-        loadTable();
-      } 
-    };
+  const xhttp = new XMLHttpRequest();
+  xhttp.open("DELETE", "https://localhost:44347/api/Patrocinador/"+id);
+  xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhttp.send(JSON.stringify({ 
+    "id": id
+  }));
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      const objects = JSON.parse(this.responseText);
+      Swal.fire(objects['message']);
+      loadTable();
+    } 
+  };
 }
 
 function showUserEditBox(id) {
-    console.log(id);
-    const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://localhost:44347/api/Patrocinador/"+id);
-    xhttp.send();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        const objects = JSON.parse(this.responseText);
-        const user = objects;
-        console.log(user);
-        Swal.fire({
-          title: 'Edit User',
-          html:
-            '<input id="id" type="hidden" value='+user['id']+'>' +
-            '<input id="nome" class="swal2-input" placeholder="Nome" value="'+user['nome']+'">' +
-            '<input id="website" class="swal2-input" placeholder="Website" value="'+user['website']+'">' +
-            '<input id="email" class="swal2-input" placeholder="Email" value="'+user['email']+'">' +
-            '<input id="celular" class="swal2-input" placeholder="Celular" value="'+user['celular']+'">' +
-            '<input id="urlLogo" class="swal2-input" placeholder="UrlLogo" value="'+user['urlLogo']+'">',
-          focusConfirm: false,
-          preConfirm: () => {
-            userEdit();
-          }
-        })
-      }
-    };
+  console.log(id);
+  const xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "https://localhost:44347/api/Patrocinador/"+id);
+  xhttp.send();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      const objects = JSON.parse(this.responseText);
+      const user = objects;
+      console.log(user);
+      Swal.fire({
+        title: 'Edit User',
+        html:
+          '<input id="id" type="hidden" value='+user['id']+'>' +
+          '<input id="nome" class="swal2-input" placeholder="Nome" value="'+user['nome']+'">' +
+          '<input id="website" class="swal2-input" placeholder="Website" value="'+user['website']+'">' +
+          '<input id="email" class="swal2-input" placeholder="Email" value="'+user['email']+'">' +
+          '<input id="celular" class="swal2-input" placeholder="Celular" value="'+user['celular']+'">' +
+          '<input id="urlLogo" class="swal2-input" placeholder="UrlLogo" value="'+user['urlLogo']+'">',
+        focusConfirm: false,
+        preConfirm: () => {
+          userEdit();
+        }
+      })
+    }
+  };
 }
 
 function userEdit() {
-    const id = document.getElementById("id").value;
-    const nome = document.getElementById("nome").value;
-    const website = document.getElementById("website").value;
-    const email = document.getElementById("email").value;
-    const celular = document.getElementById("celular").value;
-    const urlLogo = document.getElementById("urlLogo").value;
-      
-    const xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "https://localhost:44347/api/Patrocinador/");
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(JSON.stringify({ 
-      "id": id, "nome": nome, "website": website, "email": email, "celular": celular, 
-      "urlLogo": urlLogo
-    }));
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        const objects = JSON.parse(this.responseText);
-        Swal.fire(objects['message']);
-        loadTable();
-      }
-    };
+  const id = document.getElementById("id").value;
+  const nome = document.getElementById("nome").value;
+  const website = document.getElementById("website").value;
+  const email = document.getElementById("email").value;
+  const celular = document.getElementById("celular").value;
+  const urlLogo = document.getElementById("urlLogo").value;
+    
+  const xhttp = new XMLHttpRequest();
+  xhttp.open("PUT", "https://localhost:44347/api/Patrocinador/");
+  xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhttp.send(JSON.stringify({ 
+    "id": id, "nome": nome, "website": website, "email": email, "celular": celular, 
+    "urlLogo": urlLogo
+  }));
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      const objects = JSON.parse(this.responseText);
+      Swal.fire(objects['message']);
+      loadTable();
+    }
+  };
 }
