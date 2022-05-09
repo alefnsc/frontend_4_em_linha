@@ -8,13 +8,10 @@ function loadTable() {
         var trHTML = ''; 
         const objects = JSON.parse(this.responseText);
         for (let object of objects) {
-
-          const nomeTema = buscarNomeTema(object['idTema']);
-
           trHTML += '<tr>'; 
           trHTML += '<td><img width="50px" src="'+object['urlFicha']+'" class="avatar"></td>';
           trHTML += '<td>'+object['nome']+'</td>';
-          trHTML += '<td>'+nomeTema+'</td>';
+          trHTML += '<td>'+object['nomeTema']+'</td>';
           trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showUserEditBox('+object['id']+')">Edit</button>';
           trHTML += '<button type="button" class="btn btn-outline-danger" onclick="userDelete('+object['id']+')">Del</button></td>';
           trHTML += "</tr>";

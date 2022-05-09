@@ -8,13 +8,10 @@ function loadTable() {
         var trHTML = ''; 
         const objects = JSON.parse(this.responseText);
         for (let object of objects) {
-
-          const nomePatrocinador = buscarNomePatrocinador(object['idPatrocinador']);
-
           trHTML += '<tr>'; 
           trHTML += '<td><img width="150px"" src="'+object['urlTabuleiro']+'" class="avatar"></td>';
           trHTML += '<td>'+object['nome']+'</td>';     //alterar
-          trHTML += '<td>'+nomePatrocinador+'</td>';  //alterar
+          trHTML += '<td>'+object['nomePatrocinador']+'</td>';  //alterar
           trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showUserEditBox('+object['id']+')">Edit</button>';
           trHTML += '<button type="button" class="btn btn-outline-danger" onclick="userDelete('+object['id']+')">Del</button></td>';
           trHTML += "</tr>";
@@ -29,12 +26,16 @@ loadTable();
 function buscarNomePatrocinador(id){
   console.log(id);
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://localhost:44347/api/Patrocinador"+id);
+  xhttp.open("GET", "https://localhost:44347/api/Patrocinador/"+id);
   xhttp.send();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       const objects = JSON.parse(this.responseText);
-      return objects['nome'];
+
+      var teste = objects['nome'];
+      console.log(teste);
+
+      return teste;
     }
   };
 }
