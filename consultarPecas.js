@@ -92,19 +92,52 @@ function userCreate() {
 }
 
 function userDelete(id) {
-  const xhttp = new XMLHttpRequest();
-  xhttp.open("DELETE", "https://localhost:5001/api/Ficha/" + id); //url delete peca (Id no json)
-  xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  xhttp.send(JSON.stringify({
-    "id": id
-  }));
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4) {
-      const objects = JSON.parse(this.responseText);
-      Swal.fire(objects['message']);
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+    },
+    buttonsStyling: false
+  })
+  
+  swalWithBootstrapButtons.fire({
+    title: 'Tem certeza?',
+    text: "Você não poderá reverter essa mudança",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Continuar',
+    cancelButtonText: 'Cancelar',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("DELETE", "https://localhost:5001/api/Ficha/" + id); //url delete peca (Id no json)
+      xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhttp.send(JSON.stringify({
+        "id": id
+      }));
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4) {
+          const objects = JSON.parse(this.responseText);
+          Swal.fire(objects['message']);
+          loadTable();
+        }
+      };
+      
+    } else if (
+      /* Read more about handling dismissals below */
+      result.dismiss === Swal.DismissReason.cancel
+    ) {
+      swalWithBootstrapButtons.fire(
+        'Peça não deletada',
+        '',
+        'error'
+      )
       loadTable();
     }
-  };
+  })
+
 }
 
 function showUserEditBox(id) {
