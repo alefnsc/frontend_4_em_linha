@@ -39,11 +39,18 @@ function buscarNomeTema(id) {
 
 function showUserCreateBox() {
   Swal.fire({
-    title: 'Criar Peça',
+    title: 'Criar Ficha',
+    showCancelButton: true,
+    confirmButtonText: 'Criar',
+    cancelButtonText: 'Cancelar',
+    reverseButtons: true,
     html:
       '<input  id="id" type="hidden">' +
-      '<input  id="name" class="swal2-input" placeholder="Nome da Peça">' +
+      '<br><br><label >Nome:'+ '</label><br> ' +
+      '<input  id="name" class="swal2-input" placeholder="Nome da Ficha">' +
+      '<br><br><label >URL Ficha:'+ '</label><br> ' +
       '<input  id="image" class="swal2-input" placeholder="Url de Imagem">' +
+      '<br><br><label >Tema:'+ '</label><br> ' +
       '<select  id="theme" class="swal2-input" type="text" data-use-type="STRING">' +
       '<option value="" disabled selected>Selecione um Tema</option>' +
       '</select>',
@@ -138,7 +145,7 @@ function userDelete(id) {
       result.dismiss === Swal.DismissReason.cancel
     ) {
       swalWithBootstrapButtons.fire(
-        'Peça não deletada',
+        'Ficha não deletada',
         '',
         'error'
       )
@@ -151,20 +158,33 @@ function userDelete(id) {
 function showUserEditBox(id) {
   console.log(id);
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://localhost:5001/api/Ficha/" + id); //url de get peça especifica através de Id
+  xhttp.open("GET", "https://localhost:5001/api/Ficha/" + id); //url de get Ficha especifica através de Id
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       const peca = JSON.parse(this.responseText);
+      const idTema = peca['idTema'];
       console.log(peca);
       Swal.fire({
-        title: 'Editar Peça',
+        title: 'Atualizar Ficha',
+        showCancelButton: true,
+        confirmButtonText: 'Atualizar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
         html:
           '<input id="id" type="hidden" value="'+peca['id']+'">' +
+          '<input style="display: block; margin: 0 auto; padding: 20px" type="image" width="200" height="auto" src="'+peca['urlFicha']+'">' +
+          '<br><br><label >Nome:'+ '</label><br> ' +
           '<input id="name" class="swal2-input" placeholder="Nome" value="' + peca['nome'] + '">' +
+          '<br><br><label >URL Ficha:'+ '</label><br> ' +
           '<input id="image" class="swal2-input" placeholder="UrlImagem" value="' + peca['urlFicha'] + '">' +
+          '<br><br><label >Tema:'+ '</label><br> ' +
           '<select id="theme" class="swal2-input" type="text" data-use-type="STRING">' +
-          '<option value="" disabled selected>Selecione um Tema</option>' +
+          '<option value="' +
+          peca['idTema'] + 
+          '" selected>'+
+          peca['nomeTema'] +
+          '</option>' +
           '</select>',
         focusConfirm: false,
         didOpen: () => {
@@ -177,9 +197,12 @@ function showUserEditBox(id) {
               var trHTML = '';
               const objects = JSON.parse(this.responseText);
               for (let object of objects) {
+                if (object['id'] != idTema){
                 const option = new Option(object['nome'], object['id']);
+                console.log(object['id'])
                 const element = document.querySelector("#theme");
                 element.add(option, undefined)
+                }
               }
             }
           };
@@ -205,9 +228,14 @@ function userEdit() {
     "id": id, "nome": nome, "urlFicha": image, "idTema": theme
   }));
   xhttp.onreadystatechange = function () {
-    if (this.readyState == 4) {
+    if (this.readyState == 4 && this.status == 200) {
       const objects = JSON.parse(this.responseText);
       Swal.fire(objects['nome'] + ' atualizada com sucesso!');
+      loadTable();
+    }
+    else {
+      const objects = JSON.parse(this.responseText);
+      Swal.fire(objects['message']);
       loadTable();
     }
   };

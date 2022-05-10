@@ -44,15 +44,27 @@ function buscarNomePatrocinador(id){
 function showUserCreateBox() {
     Swal.fire({
       title: 'Criar Tema',
+      showCancelButton: true,
+      confirmButtonText: 'Criar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
       html:
         '<input id="Id" type="hidden">' +
+        '<br><br><label >Nome:'+ '</label><br> ' +
         '<input id="Nome" class="swal2-input" placeholder="Nome">' +
+        '<br><br><label >URL Tabuleiro:'+ '</label><br> ' +
         '<input id="UrlTabuleiro" class="swal2-input" placeholder="Url">' +
-        '<br><br><br><p id="mensagemPeca">Para a criação de um Tema,</p> <p>é necesário adicionar duas Peças</p>' +
+        '<br><br><hr> ' +
+        '<p style="font-size: 14px; font-family: arial, sans-serif;">*Um tema deve conter no mínimo 2 peças</p>' +
+        '<br><br><label >Nome da Peça 1:'+ '</label><br> ' +
         '<input id="NomePeca1" class="swal2-input" placeholder="Nome Peça 1">' +
+        '<br><br><label >URL da Peça 1:'+ '</label><br> ' +
         '<input id="UrlPeca1" class="swal2-input" placeholder="URL Peça 1">' +
+        '<br><br><label >Nome da Peça 2:'+ '</label><br> ' +
         '<input id="NomePeca2" class="swal2-input" placeholder="Nome Peça 2">' +
+        '<br><br><label >URL da Peça 2:'+ '</label><br> ' +
         '<input id="UrlPeca2" class="swal2-input" placeholder="URL Peça 2">' +
+        '<br><br><label >Patrocinador:'+ '</label><br> ' +
         '<select id="idPatrocinador" class="swal2-input" type="text" data-use-type="STRING">' +
         '<option value="" disabled selected>Selecione o Patrocinador:</option>' +
         '</select>',
@@ -191,12 +203,19 @@ function showUserEditBox(id) {
         const user = objects;
         const idPatrocina = objects['idPatrocinador'];
         Swal.fire({
-          title: 'Editar Tema',
+          title: 'Atualizar Tema',
+          showCancelButton: true,
+          confirmButtonText: 'Atualizar',
+          cancelButtonText: 'Cancelar',
+          reverseButtons: true,
           html:
             '<input id="id" type="hidden" value="'+user['id']+'">' +
             '<input style="display: block; margin: 0 auto; padding: 20px" type="image" width="200" height="auto" src="'+user['urlTabuleiro']+'">' +
-            '<input id="Nome" class="swal2-input" placeholder="First" value="'+user['nome']+'">' +            
+            '<br><br><label >Nome:'+ '</label><br> ' +
+            '<input id="Nome" class="swal2-input" placeholder="First" value="'+user['nome']+'">' +  
+            '<br><br><label >URL Tabuleiro:'+ '</label><br> ' +          
             '<input id="UrlTabuleiro" class="swal2-input" placeholder="Last" value="'+user['urlTabuleiro']+'">' +
+            '<br><br><label >Patrocinador:'+ '</label><br> ' +  
             '<select id="patrocinadores" class="swal2-input" type="text" data-use-type="STRING">' +
             '<option disabled value="' +
             objects['idPatrocinador'] + 

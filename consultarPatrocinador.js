@@ -25,12 +25,21 @@ loadTable();
 function showUserCreateBox() {
     Swal.fire({
       title: 'Criar Patrocinador',
+      showCancelButton: true,
+      confirmButtonText: 'Criar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
       html:
         '<input id="Id" type="hidden">' +
+        '<br><br><label >Nome:'+ '</label><br> ' +
         '<input required type="text" id="Nome" class="swal2-input" placeholder="Nome">' +
+        '<br><br><label >Email:'+ '</label><br> ' +
         '<input required type="email" id="Email" class="swal2-input" placeholder="exemplo@mail.com">' +
+        '<br><br><label >URL Logo:'+ '</label><br> ' +
         '<input required type="url" id="UrlLogo" class="swal2-input" placeholder="http://exemplo.com.br/img.png">' +
+        '<br><br><label >URL Website:'+ '</label><br> ' +
         '<input required type="url" id="Website" class="swal2-input" placeholder="http://exemplo.com.br">' +
+        '<br><br><label >Celular:'+ '</label><br> ' +
         '<input required type="tel" id="Celular" maxlength="17" class="swal2-input js-field-personal_phone" placeholder="(11) 99999-9999">' ,
       focusConfirm: false,
       preConfirm: () => {
@@ -144,12 +153,22 @@ function showUserEditBox(id) {
       const user = objects;
       Swal.fire({
         title: 'Atualizar Patrocinador',
+        showCancelButton: true,
+        confirmButtonText: 'Atualizar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
         html:
           '<input id="id" type="hidden" value='+user['id']+'>' +
+          '<input style="display: block; margin: 0 auto; padding: 20px" type="image" width="200" height="auto" src="'+user['urlLogo']+'">' +
+          '<br><br><label >Nome:'+ '</label><br> ' +
           '<input id="nome" class="swal2-input" placeholder="Nome" value="'+user['nome']+'">' +
-          '<input id="website" class="swal2-input" placeholder="Website" value="'+user['website']+'">' +
+          '<br><br><label >Email:'+ '</label><br> ' +
           '<input id="email" class="swal2-input" placeholder="Email" value="'+user['email']+'">' +
+          '<br><br><label >Celular:'+ '</label><br> ' +
           '<input id="celular" class="swal2-input" placeholder="Celular" value="'+user['celular']+'">' +
+          '<br><br><label >URL Website:'+ '</label><br> ' +
+          '<input id="website" class="swal2-input" placeholder="Website" value="'+user['website']+'">' +
+          '<br><br><label >URL Logo:'+ '</label><br> ' +
           '<input id="urlLogo" class="swal2-input" placeholder="UrlLogo" value="'+user['urlLogo']+'">',
         focusConfirm: false,
         preConfirm: () => {
