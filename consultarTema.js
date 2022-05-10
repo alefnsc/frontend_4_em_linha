@@ -76,7 +76,18 @@ function showUserCreateBox() {
         };
       },  
       preConfirm: () => {
-        userCreate();
+        Nome = document.getElementById('Nome').value;
+        UrlTabuleiro = document.getElementById('UrlTabuleiro').value;
+        NomePeca1 = document.getElementById('NomePeca1').value;
+        NomePeca2 = document.getElementById('NomePeca2').value;
+        UrlPeca1 = document.getElementById('UrlPeca1').value;
+        UrlPeca2 = document.getElementById('UrlPeca2').value;
+        idPatrocinador = document.getElementById('idPatrocinador').value;
+ 
+       if( !Nome || !NomePeca1 || !UrlTabuleiro  || !NomePeca2 || !UrlPeca1 || !UrlPeca2 || !idPatrocinador ) {
+        Swal.fire('Preencha todos os campos!');
+       }
+       else userCreate();
       }
     })
 }
@@ -178,7 +189,7 @@ function showUserEditBox(id) {
       if (this.readyState == 4 && this.status == 200) {
         const objects = JSON.parse(this.responseText);
         const user = objects;
-        console.log(user);
+        const idPatrocina = objects['idPatrocinador'];
         Swal.fire({
           title: 'Editar Tema',
           html:
@@ -187,7 +198,7 @@ function showUserEditBox(id) {
             '<input id="Nome" class="swal2-input" placeholder="First" value="'+user['nome']+'">' +            
             '<input id="UrlTabuleiro" class="swal2-input" placeholder="Last" value="'+user['urlTabuleiro']+'">' +
             '<select id="patrocinadores" class="swal2-input" type="text" data-use-type="STRING">' +
-            '<option value="' +
+            '<option disabled value="' +
             objects['idPatrocinador'] + 
             '" selected>'+
             objects['nomePatrocinador'] +
@@ -203,8 +214,9 @@ function showUserEditBox(id) {
                 //console.log(this.responseText);
                 var trHTML = ''; 
                 const objects = JSON.parse(this.responseText);
+
                 for (let object of objects) {
-                  if (object['idPatrocinador'] != user['idPatrocinador']){
+                  if (object['id'] != idPatrocina){
                   const option = new Option(object['nome'], object['id']);
                   const element = document.querySelector("#patrocinadores");
                   element.add(option, undefined)
@@ -222,7 +234,7 @@ function showUserEditBox(id) {
 }
 
 function userEdit() {
-    const id = document.getElementById("Id").value;
+    const id = document.getElementById("id").value;
     const Nome = document.getElementById("Nome").value;
     const UrlTabuleiro = document.getElementById("UrlTabuleiro").value;
     const idPatrocinador = document.getElementById("patrocinadores").value;

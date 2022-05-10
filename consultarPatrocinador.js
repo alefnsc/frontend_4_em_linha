@@ -27,32 +27,23 @@ function showUserCreateBox() {
       title: 'Criar Patrocinador',
       html:
         '<input id="Id" type="hidden">' +
-        '<input id="Nome" class="swal2-input" placeholder="Nome">' +
-        '<input id="Email" class="swal2-input" placeholder="E-mail">' +
-        '<input id="UrlLogo" class="swal2-input" placeholder="Url">' +
-        '<input id="Website" class="swal2-input" placeholder="Website">' +
-        '<input id="Celular" maxlength="15" class="swal2-input js-field-personal_phone" name="personal_phone" placeholder="Celular">',
-        
+        '<input required type="text" id="Nome" class="swal2-input" placeholder="Nome">' +
+        '<input required type="email" id="Email" class="swal2-input" placeholder="exemplo@mail.com">' +
+        '<input required type="url" id="UrlLogo" class="swal2-input" placeholder="http://exemplo.com.br/img.png">' +
+        '<input required type="url" id="Website" class="swal2-input" placeholder="http://exemplo.com.br">' +
+        '<input required type="tel" id="Celular" maxlength="17" class="swal2-input js-field-personal_phone" placeholder="(11) 99999-9999">' ,
       focusConfirm: false,
-      /* didOpen: () => {
-        const xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "https://localhost:5001/api/Patrocinador/" + object['id']) ;
-        xhttp.send();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            var trHTML = ''; 
-            const objects = JSON.parse(this.responseText);
-            for (let object of objects) {
-              const option = new Option(object['nome'], object['id']);
-              const element = document.querySelector("#patrocinador");
-              element.add(option, undefined)
-            }
-          }
-        };
-      },  */
       preConfirm: () => {
-        userCreate();
+        NomePat = document.getElementById('Nome').value;
+        Email = document.getElementById('Email').value;
+        UrlLogo = document.getElementById('UrlLogo').value;
+        Website = document.getElementById('Website').value;
+        Celular = document.getElementById('Celular').value;
+ 
+       if( !NomePat || !Email || !UrlLogo  || !Website || !Celular ) {
+        Swal.fire('Preencha todos os campos!');
+       }
+       else userCreate();
       }
     })
 } 
@@ -88,43 +79,6 @@ function userCreate() {
     };
 }
 
-// function showUserCreateBox() {
-//     Swal.fire({
-//       title: 'Create user',
-//       html:
-//         '<input id="id" type="hidden">' +
-//         '<input id="fname" class="swal2-input" placeholder="First">' +
-//         '<input id="lname" class="swal2-input" placeholder="Last">' +
-//         '<input id="username" class="swal2-input" placeholder="Username">' +
-//         '<input id="email" class="swal2-input" placeholder="Email">',
-//       focusConfirm: false,
-//       preConfirm: () => {
-//         userCreate();
-//       }
-//     })
-// }
-
-// function userCreate() {
-//     const fname = document.getElementById("fname").value;
-//     const lname = document.getElementById("lname").value;
-//     const username = document.getElementById("username").value;
-//     const email = document.getElementById("email").value;
-      
-//     const xhttp = new XMLHttpRequest();
-//     xhttp.open("POST", "https://localhost:5001/api/Patrocinador/");
-//     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-//     xhttp.send(JSON.stringify({ 
-//       "fname": fname, "lname": lname, "username": username, "email": email, 
-//       "avatar": "https://i.pinimg.com/736x/0d/d2/0e/0dd20ebf2a8737a2d9740be6d5877b8b.jpg"
-//     }));
-//     xhttp.onreadystatechange = function() {
-//       if (this.readyState == 4 && this.status == 200) {
-//         const objects = JSON.parse(this.responseText);
-//         Swal.fire(objects['message']);
-//         loadTable();
-//       }
-//     };
-// }
 
 function userDelete(id) {
 

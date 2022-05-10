@@ -66,7 +66,15 @@ function showUserCreateBox() {
       };
     },
     preConfirm: () => {
-      userCreate();
+
+        Nome = document.getElementById('name').value;
+        image = document.getElementById('image').value;
+        theme = document.getElementById('theme').value;
+ 
+       if( !Nome || !image || !theme) {
+        Swal.fire('Preencha todos os campos!');
+       }
+       else userCreate();
     }
   })
 }
