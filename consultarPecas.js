@@ -49,7 +49,7 @@ function showUserCreateBox() {
       '<br><br><label >Nome:'+ '</label><br> ' +
       '<input  id="name" class="swal2-input" placeholder="Nome da Ficha">' +
       '<br><br><label >URL Ficha:'+ '</label><br> ' +
-      '<input  id="image" class="swal2-input" placeholder="Url de Imagem">' +
+      '<input  id="image" required type="file" class="swal2-input" placeholder="Url de Imagem">' +
       '<br><br><label >Tema:'+ '</label><br> ' +
       '<select  id="theme" class="swal2-input" type="text" data-use-type="STRING">' +
       '<option value="" disabled selected>Selecione um Tema</option>' +
@@ -81,14 +81,41 @@ function showUserCreateBox() {
        if( !Nome || !image || !theme) {
         Swal.fire('Preencha todos os campos!');
        }
-       else userCreate();
+       else {
+        salvarImagemFirebase();
+         userCreate();
+
+        }
     }
   })
 }
 
-function userCreate() {
+async function salvarImagemFirebase(){
+  var firebase = {
+    apiKey:'AIzaSyC5U5VOzR9KPsgdoApExXRpvDmMCssw8c',
+    authDomain:'<your-auth-domain>',
+    databaseURL: '<your-database-url>',
+    storageBucket: 'gs://quatro-em-linha.appspot.com/'
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  let storage = firebase.storage();
+
+  const nomeImagem = document.getElementById("Nome").value;
+  upload = storage.ref().child("ImagensProjeto").child(nomeImagem+".png").put(document.getElementById("UrlLogo").files[0]);
+
+  upload.on("state_changed",function(){
+    upload.snapshot.ref.getDownloadURL().then(function(url_imagem){
+      console.log("URL: "+url_imagem)
+      userCreate(url_imagem);
+    })
+  }
+  )
+}
+
+function userCreate(url_imagem) {
   const name = document.getElementById("name").value;
-  const image = document.getElementById("image").value;
+  const image = url_imagem;
   const idTema = document.getElementById("theme").value;
 
   const xhttp = new XMLHttpRequest();
@@ -101,6 +128,11 @@ function userCreate() {
     if (this.readyState == 4) {
       const objects = JSON.parse(this.responseText);
       Swal.fire(objects['nome'] + ' criada com sucesso!');
+      loadTable();
+    }
+    else {
+      const objects = JSON.parse(this.responseText);
+      Swal.fire(objects['message']);
       loadTable();
     }
   };
@@ -177,7 +209,7 @@ function showUserEditBox(id) {
           '<br><br><label >Nome:'+ '</label><br> ' +
           '<input id="name" class="swal2-input" placeholder="Nome" value="' + peca['nome'] + '">' +
           '<br><br><label >URL Ficha:'+ '</label><br> ' +
-          '<input id="image" class="swal2-input" placeholder="UrlImagem" value="' + peca['urlFicha'] + '">' +
+          '<input id="image" required type="file"  class="swal2-input" placeholder="UrlImagem" value="' + peca['urlFicha'] + '">' +
           '<br><br><label >Tema:'+ '</label><br> ' +
           '<select id="theme" class="swal2-input" type="text" data-use-type="STRING">' +
           '<option value="' +
@@ -208,17 +240,18 @@ function showUserEditBox(id) {
           };
         },
         preConfirm: () => {
-          userEdit();
+          userEdit(url_imagem);
+          salvarImagemFirebase();
         }
       })
     }
   };
 }
 
-function userEdit() {
+function userEdit(url_imagem) {
   const id = document.getElementById("id").value;
   const nome = document.getElementById("name").value;
-  const image = document.getElementById("image").value;
+  const image = url_imagem;
   const theme = document.getElementById("theme").value;
 
   const xhttp = new XMLHttpRequest();

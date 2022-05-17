@@ -36,7 +36,7 @@ function showUserCreateBox() {
         '<br><br><label >Email:'+ '</label><br> ' +
         '<input required type="email" id="Email" class="swal2-input" placeholder="exemplo@mail.com">' +
         '<br><br><label >URL Logo:'+ '</label><br> ' +
-        '<input required type="url" id="UrlLogo" class="swal2-input" placeholder="http://exemplo.com.br/img.png">' +
+        '<input required type="file" id="UrlLogo" class="swal2-input" placeholder="http://exemplo.com.br/img.png">' +
         '<br><br><label >URL Website:'+ '</label><br> ' +
         '<input required type="url" id="Website" class="swal2-input" placeholder="http://exemplo.com.br">' +
         '<br><br><label >Celular:'+ '</label><br> ' +
@@ -52,15 +52,40 @@ function showUserCreateBox() {
        if( !NomePat || !Email || !UrlLogo  || !Website || !Celular ) {
         Swal.fire('Preencha todos os campos!');
        }
-       else userCreate();
+       else {
+           salvarImagemFirebase();
+          userCreate();
+       }
       }
     })
 } 
+async function salvarImagemFirebase(){
+  var firebase = {
+    apiKey:'AIzaSyC5U5VOzR9KPsgdoApExXRpvDmMCssw8c',
+    authDomain:'<your-auth-domain>',
+    databaseURL: '<your-database-url>',
+    storageBucket: 'gs://quatro-em-linha.appspot.com/'
+  };
+  firebase.initializeApp(firebaseConfig);
 
-function userCreate() {
+  let storage = firebase.storage();
+
+  const nomeImagem = document.getElementById("Nome").value;
+  upload = storage.ref().child("ImagensProjeto").child(nomeImagem+".png").put(document.getElementById("UrlLogo").files[0]);
+
+  upload.on("state_changed",function(){
+    upload.snapshot.ref.getDownloadURL().then(function(url_imagem){
+      console.log("URL: "+url_imagem)
+      userCreate(url_imagem);
+    })
+  }
+  )
+}
+
+function userCreate(url_imagem) {
     const Nome = document.getElementById("Nome").value;
     const Email = document.getElementById("Email").value;
-    const UrlLogo = document.getElementById("UrlLogo").value;
+    const UrlLogo = url_imagem;
     const Website = document.getElementById("Website").value;
     const Celular = document.getElementById("Celular").value;
 
@@ -169,23 +194,24 @@ function showUserEditBox(id) {
           '<br><br><label >URL Website:'+ '</label><br> ' +
           '<input id="website" class="swal2-input" placeholder="Website" value="'+user['website']+'">' +
           '<br><br><label >URL Logo:'+ '</label><br> ' +
-          '<input id="urlLogo" class="swal2-input" placeholder="UrlLogo" value="'+user['urlLogo']+'">',
+          '<input id="urlLogo" required type="file" class="swal2-input" placeholder="UrlLogo" value="'+user['urlLogo']+'">',
         focusConfirm: false,
         preConfirm: () => {
-          userEdit();
+          userEdit(url_imagem);
+          salvarImagemFirebase();
         }
       })
     }
   };
 }
 
-function userEdit() {
+function userEdit(url_imagem) {
   const id = document.getElementById("id").value;
   const nome = document.getElementById("nome").value;
   const website = document.getElementById("website").value;
   const email = document.getElementById("email").value;
   const celular = document.getElementById("celular").value;
-  const urlLogo = document.getElementById("urlLogo").value;
+  const urlLogo = url_imagem;
     
   const xhttp = new XMLHttpRequest();
   xhttp.open("PUT", "https://localhost:5001/api/Patrocinador/");
@@ -198,6 +224,11 @@ function userEdit() {
     if (this.readyState == 4 && this.status == 200) {
       const objects = JSON.parse(this.responseText);
       Swal.fire(objects['nome'] + ' atualizado com sucesso!');
+      loadTable();
+    }
+    else {
+      const objects = JSON.parse(this.responseText);
+      Swal.fire(objects['message']);
       loadTable();
     }
   };

@@ -53,17 +53,8 @@ function showUserCreateBox() {
         '<br><br><label >Nome:'+ '</label><br> ' +
         '<input id="Nome" class="swal2-input" placeholder="Nome">' +
         '<br><br><label >URL Tabuleiro:'+ '</label><br> ' +
-        '<input id="UrlTabuleiro" class="swal2-input" placeholder="Url">' +
-        '<br><br><hr> ' +
-        '<p style="font-size: 14px; font-family: arial, sans-serif;">*Um tema deve conter no mínimo 2 peças</p>' +
-        '<br><br><label >Nome da Peça 1:'+ '</label><br> ' +
-        '<input id="NomePeca1" class="swal2-input" placeholder="Nome Peça 1">' +
-        '<br><br><label >URL da Peça 1:'+ '</label><br> ' +
-        '<input id="UrlPeca1" class="swal2-input" placeholder="URL Peça 1">' +
-        '<br><br><label >Nome da Peça 2:'+ '</label><br> ' +
-        '<input id="NomePeca2" class="swal2-input" placeholder="Nome Peça 2">' +
-        '<br><br><label >URL da Peça 2:'+ '</label><br> ' +
-        '<input id="UrlPeca2" class="swal2-input" placeholder="URL Peça 2">' +
+        '<input id="UrlTabuleiro" required type="file"  class="swal2-input" placeholder="Url">' +
+        '<br><br><hr>'+
         '<br><br><label >Patrocinador:'+ '</label><br> ' +
         '<select id="idPatrocinador" class="swal2-input" type="text" data-use-type="STRING">' +
         '<option value="" disabled selected>Selecione o Patrocinador:</option>' +
@@ -90,43 +81,58 @@ function showUserCreateBox() {
       preConfirm: () => {
         Nome = document.getElementById('Nome').value;
         UrlTabuleiro = document.getElementById('UrlTabuleiro').value;
-        NomePeca1 = document.getElementById('NomePeca1').value;
-        NomePeca2 = document.getElementById('NomePeca2').value;
-        UrlPeca1 = document.getElementById('UrlPeca1').value;
-        UrlPeca2 = document.getElementById('UrlPeca2').value;
         idPatrocinador = document.getElementById('idPatrocinador').value;
  
-       if( !Nome || !NomePeca1 || !UrlTabuleiro  || !NomePeca2 || !UrlPeca1 || !UrlPeca2 || !idPatrocinador ) {
+       if( !Nome || !UrlTabuleiro  || !idPatrocinador ) {
         Swal.fire('Preencha todos os campos!');
        }
-       else userCreate();
+       else {
+        salvarImagemFirebase();
+         userCreate();
+         
+       }
       }
     })
 }
 
-function userCreate() {
+async function salvarImagemFirebase(){
+  var firebase = {
+    apiKey:'AIzaSyC5U5VOzR9KPsgdoApExXRpvDmMCssw8c',
+    authDomain:'<your-auth-domain>',
+    databaseURL: '<your-database-url>',
+    storageBucket: 'gs://quatro-em-linha.appspot.com/'
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  let storage = firebase.storage();
+
+  const nomeImagem = document.getElementById("Nome").value;
+  upload = storage.ref().child("ImagensProjeto").child(nomeImagem+".png").put(document.getElementById("UrlLogo").files[0]);
+
+  upload.on("state_changed",function(){
+    upload.snapshot.ref.getDownloadURL().then(function(url_imagem){
+      console.log("URL: "+url_imagem)
+      userCreate(url_imagem);
+    })
+  }
+  )
+}
+
+function userCreate(url_imagem) {
     const nome = document.getElementById("Nome").value;
-    const urlTabuleiro = document.getElementById("UrlTabuleiro").value;
+    const urlTabuleiro = url_imagem;
     const idPatrocinador = document.getElementById("idPatrocinador").value;
-    const nomePeca1 = document.getElementById("NomePeca1").value;
-    const urlPeca1 = document.getElementById("UrlPeca1").value;
-    const nomePeca2 = document.getElementById("NomePeca2").value;
-    const urlPeca2 = document.getElementById("UrlPeca2").value;
     
     console.log(JSON.stringify({ 
-      "nomeTema": nome, "urlTabuleiro": urlTabuleiro, "idPatrocinador": idPatrocinador,
-      "nomeFicha1": nomePeca1, "urlFicha1": urlPeca1,
-      "nomeFicha2": nomePeca2, "urlFicha2": urlPeca2
+      "nomeTema": nome, "urlTabuleiro": urlTabuleiro, "idPatrocinador": idPatrocinador
     }))
 
     const xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "https://localhost:5001/api/Tema/Fichas");
+    xhttp.open("POST", "https://localhost:5001/api/Tema");
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     
     xhttp.send(JSON.stringify({ 
-      "nomeTema": nome, "urlTabuleiro": urlTabuleiro, "idPatrocinador": idPatrocinador,
-      "nomeFicha1": nomePeca1, "urlFicha1": urlPeca1,
-      "nomeFicha2": nomePeca2, "urlFicha2": urlPeca2
+      "nomeTema": nome, "urlTabuleiro": urlTabuleiro, "idPatrocinador": idPatrocinador
     }));
 
     xhttp.onreadystatechange = function() {
@@ -214,7 +220,7 @@ function showUserEditBox(id) {
             '<br><br><label >Nome:'+ '</label><br> ' +
             '<input id="Nome" class="swal2-input" placeholder="First" value="'+user['nome']+'">' +  
             '<br><br><label >URL Tabuleiro:'+ '</label><br> ' +          
-            '<input id="UrlTabuleiro" class="swal2-input" placeholder="Last" value="'+user['urlTabuleiro']+'">' +
+            '<input id="UrlTabuleiro" required type="file" class="swal2-input" placeholder="Last" value="'+user['urlTabuleiro']+'">' +
             '<br><br><label >Patrocinador:'+ '</label><br> ' +  
             '<select id="patrocinadores" class="swal2-input" type="text" data-use-type="STRING">' +
             '<option disabled value="' +
@@ -245,17 +251,18 @@ function showUserEditBox(id) {
             };
           },
           preConfirm: () => {
-            userEdit();
+            userEdit(url_imagem);
+            salvarImagemFirebase();
           }
         })
       }
     };
 }
 
-function userEdit() {
+function userEdit(url_imagem) {
     const id = document.getElementById("id").value;
     const Nome = document.getElementById("Nome").value;
-    const UrlTabuleiro = document.getElementById("UrlTabuleiro").value;
+    const UrlTabuleiro = url_imagem;
     const idPatrocinador = document.getElementById("patrocinadores").value;
 
     const xhttp = new XMLHttpRequest();
