@@ -4,7 +4,6 @@ function loadTable() {
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
       var trHTML = '';
       const objects = JSON.parse(this.responseText);
       for (let object of objects) {
@@ -82,47 +81,69 @@ function showUserCreateBox() {
         Swal.fire('Preencha todos os campos!');
        }
        else {
-        salvarImagemFirebase();
-         userCreate();
+        salvarImagemFirebase(theme);
 
         }
     }
   })
 }
 
-async function salvarImagemFirebase(){
-  var firebase = {
-    apiKey:'AIzaSyC5U5VOzR9KPsgdoApExXRpvDmMCssw8c',
-    authDomain:'<your-auth-domain>',
-    databaseURL: '<your-database-url>',
-    storageBucket: 'gs://quatro-em-linha.appspot.com/'
+async function salvarImagemFirebase(idTema) {
+  const firebaseConfig = {
+    apiKey: "AIzaSyCKU6lw0J2J8_pUyEBgSPrT4l2yptnBPZQ",
+    authDomain: "forline-4ef2b.firebaseapp.com",
+    projectId: "forline-4ef2b",
+    storageBucket: "forline-4ef2b.appspot.com",
+    messagingSenderId: "475759422512",
+    appId: "1:475759422512:web:ca8405d44016448cf0d1f5",
+    measurementId: "G-BQV4FC6PW1"
   };
   firebase.initializeApp(firebaseConfig);
 
-  let storage = firebase.storage();
+  var storage = firebase.storage();
 
-  const nomeImagem = document.getElementById("Nome").value;
-  upload = storage.ref().child("ImagensProjeto").child(nomeImagem+".png").put(document.getElementById("UrlLogo").files[0]);
+  var file = document.querySelector("#image").files[0];
 
-  upload.on("state_changed",function(){
-    upload.snapshot.ref.getDownloadURL().then(function(url_imagem){
-      console.log("URL: "+url_imagem)
-      userCreate(url_imagem);
+  /* var date = new Date();x
+
+  var name = date.getDate() + '_' + date.getMonth + '_' + date.getFullYear + '-' + nomeImagem;*/
+
+  var date = new Date().toLocaleDateString();
+  console.log(date);
+  var date = date.replace(/\//g, "_");
+  console.log(date);
+
+
+  var nomeImagem = document.getElementById("name").value;
+
+  var nomeImagemF =  nomeImagem + '_' + date;
+
+  const metadata = {
+    contentType:file.type
+  }
+
+  const ext = file.type.substring(file.type.indexOf('/')+1);
+
+  upload = storage.ref().child("ImagensFicha").child(nomeImagemF + '.' + ext).put(file, metadata);
+
+  upload.on("state_changed", function () {
+    upload.snapshot.ref.getDownloadURL().then(function (url_imagem) {
+      userCreate(url_imagem, nomeImagem, idTema);
     })
   }
   )
 }
 
-function userCreate(url_imagem) {
-  const name = document.getElementById("name").value;
+function userCreate(url_imagem, img, idTema) {
+  const name = img;
   const image = url_imagem;
-  const idTema = document.getElementById("theme").value;
+  const Tema = idTema;
 
   const xhttp = new XMLHttpRequest();
   xhttp.open("POST", "https://localhost:5001/api/Ficha/");  //url de post ficha
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify({
-    "nome": name, "urlFicha": image, "idTema": idTema
+    "nome": name, "urlFicha": image, "idTema": Tema
   }));
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4) {
