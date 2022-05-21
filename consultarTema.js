@@ -143,9 +143,6 @@ function userCreate(url_imagem, nomeImagem, idPatrocinador) {
   const nome = nomeImagem;
   const urlTabuleiro = url_imagem;
   const idPatroci = idPatrocinador;
-  console.log(nome);
-  console.log(urlTabuleiro);
-  console.log(idPatroci);
 
 
   console.log(JSON.stringify({
