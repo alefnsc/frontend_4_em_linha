@@ -5,15 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="icon" type="imagem/png" href="images/icone.png"/>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="./javascript/jquery-3.6.0.js"></script>
 
-    <title>Saguão</title>
+    <title>4 em Linha</title>
 </head>
 <body class="bg-light">
     <div class="container">
         <div class="col-md-12 bg-light order-md-1 text-right">
-            <button type="button" class="btn btn-primary btn-lg" style="margin-top:10px">Sair</button>
+            <a href="index.html"><button type="button" class="btn btn-primary btn-lg" style="margin-top:10px">Sair</button></a>
         </div>
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="./images/logo.png" alt="Imagem não encontrada" width="72" height="72">
@@ -52,11 +53,11 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                            Encontramos uma partida para você!
+                            <p>Encontramos uma partida para você!</p>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Recusar</button>
-                          <button type="button" class="btn btn-primary">Aceitar</button>
+                          <button type="button" class="btn btn-primary" onclick="location.href='game.html'">Aceitar</button>
                         </div>
                       </div>
                     </div>
@@ -65,17 +66,18 @@
                     Mostrar modal de partida encontrada
                   </button>
             </div>
+            
             <div id="modalPatrocinadores" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Patrocinadores</h5>
+                      <h5 class="modal-title" id="tituloPatrocinadores">Patrocinadores</h5>
                       <button type="button" class="close" data-dismiss="modalPatrocinadores" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body">
-                      <p>este são os patrocinadores desse projeto.</p>
+                      <p>Estes são os patrocinadores desse projeto.</p>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modalPatrocinadores">Fechar</button>
@@ -97,11 +99,9 @@
                 <br>
                 <a id="patrocinadores" href="#" class="stretched-link display-4">Patrocinadores</a>
             </div>
-
-        
         </div>
-            
     </div>
+
     <script>
         $(document).ready(function() {
             $("#botaoCancelar").hide();
@@ -109,13 +109,13 @@
                 $("#botaoJogar").html("Procurando partida ...");
                 $("#botaoCancelar").show();
             })
-            $("#botaoCancelar").click(function () {
+            $("#botaoCancelar").click(function() {
                 $("#botaoCancelar").hide();
                 $("#botaoJogar").html("Procurar partida");
             });
-            $("#patrocinadores").click(function(){
+            $("#patrocinadores").click(function() {
                 $("#modalPatrocinadores").show();
-
+                
             })
 
         });

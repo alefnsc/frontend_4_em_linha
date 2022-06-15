@@ -1,17 +1,42 @@
 <html>
 
 <head>
-    <title>Testando jogo</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="imagem/png" href="images/icone.png"/>
+
+    <script src="./javascript/script_cad.js" defer></script>
+
+    <title>4 em linha</title>
 </head>
 
 <body>
-    <div id="tudo" style=" width: 800px; margin: 0 auto;">
+    <div id="div1">
         <audio src="win.wav"></audio>
         <div id="title"><H1>4 EM LINHA</H1></div>
-        <div id="helper"></div>
+        <div id="helper" style="margin-left: 100px"></div>
         <div id="screen"></div>
         <div id="bloco">
             <div id="popup"></div>
+        </div>
+        <div><h1 style="margin-left: 220px; margin-top: 40px;">Vez do jogador X | Criar função</h1></div>
+        <div><h1 style="margin-left: 280px; margin-top: 20px;">Tempo | Criar função</h1></div>
+    </div>
+    <div id="div2">
+        <div>
+            <span class="login__icons_cad">
+                <button type="button" id="button_game_back" onclick="location.href='saguao.html'">
+                    Voltar para o saguão
+                </button>
+        </div>
+        <div>
+            <a href="https://www.marvel.com/" target="_blank"><img id="img_patrocinador" src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2019/08/cropped-kevin-feige-is-now-planning-for-mcu-films-through-2025-avengers-4-title-will-speak-to-the-heart-of-the-story-social-1.jpg" width="640" height="400"></a>
+        </div>
+        <div>
+            <h3 style="margin-top: 100px; margin-left: 50px">Jogador 1 X Jogador 2 | Criar função</h3>
         </div>
     </div>
 </body>
@@ -207,6 +232,25 @@
 
 </script>
 <style>
+
+    div {
+        display: inline-block;
+    }
+
+    #div1 {
+        width: 60vw;
+        height: 100vh;
+        float: left;
+        padding: clamp(35px, 8%, 70px);
+    }
+
+    #div2 {
+        width: 38.5vw;
+        height: 100vh;
+        float: left;
+        padding: clamp(35px, 8%, 70px);
+    }
+
     .playerActionTd {
         border: 0px !important;
     }
@@ -220,29 +264,31 @@
 
     .playerAction2:hover {
         background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png");
-        background-size: 100% auto;
+        background-size: 98px 100px;
         
     }
 
     .playerAction1:hover {
-        background-image: url("https://img.freepik.com/fotos-gratis/imagem-aproximada-em-tons-de-cinza-de-uma-aguia-careca-americana-em-um-fundo-escuro_181624-31795.jpg");
-        background-size: 100% auto;
+        background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");
+        background-size: 98px 100px;
     }
 
     #screen {
         margin-top: 5px;
+        margin-left: 100px
     }
 
     #title {
-        width: 700px;
-        text-align: center;
+        margin-top: -40px;
+        margin-left: 350px;
     }
 
     .tabelaPrincipal {
         border: solid 1px black;
         width: 700px;
         height: 600px;
-        background-image: url("https://img.freepik.com/fotos-gratis/imagem-aproximada-em-tons-de-cinza-de-uma-aguia-careca-americana-em-um-fundo-escuro_181624-31795.jpg");
+        background-size: 700px 600px;
+        background-image: url("https://cdn.ome.lt/42GZQPInUNFKS4wAkk1_s6yViKU=/1200x630/smart/extras/conteudos/fortnite-x-marvel-zero-war-announcement-article-card_S0F5i0s.jpg");
     }
 
     @keyframes peca {
@@ -273,28 +319,37 @@
     }
 
     .red {
-        background-image: url("https://img.freepik.com/fotos-gratis/imagem-aproximada-em-tons-de-cinza-de-uma-aguia-careca-americana-em-um-fundo-escuro_181624-31795.jpg");
-        background-size: 100% auto;
+        background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");
+        background-size: 98px 100px;
     }
 
     .blue {
         background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png");
-        background-size: 100% auto;
+        background-size: 98px 100px;
         
     }
 
     #popup {
         width: 100%;
-        height: 100%;
         top: 0;
-        left: 0;
-        background-color: rgb(190, 190, 190);
+        left: 35px;
+        background-color: rgb(160, 146, 146);
         color: rgb(0, 0, 0);
         position: absolute;
         display: none;
         text-align: center;
         border-radius: 20px;
         padding: 20px;
+    }
+
+    #botao {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        height: 35px;
+        border-radius: 25px;
+        cursor: pointer;
+        border: 0.1px solid black;
     }
 
     #bloco {
@@ -306,6 +361,26 @@
         margin-left: -100px;
         position: absolute;
     }
+
+    #button_game_back {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    margin-left: 300px;
+    margin-top: -370px;
+    }
+
+    #img_patrocinador {
+        border: 5px solid black;
+        margin-left: -100px;
+        margin-top: -240px;
+    }
+
 </style>
 
 </html>

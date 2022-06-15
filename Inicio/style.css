@@ -74,6 +74,12 @@ main {
     margin-bottom: 30px;
 }
 
+.login__title_senha {
+    color: var(--deep-grey);
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
 .login__label {
     display: block;
     margin-bottom: 20px;
@@ -149,15 +155,42 @@ main {
     margin-top: 350px;
 }
 
+.login__icons_senha {
+    display: flex;
+    gap: 10px;
+    width: 450px;
+    margin-top: 380px;
+    float: left;
+    justify-content: center;
+}
+
+.login__icons_senha_2 {
+    display: flex;
+    gap: 10px;
+    width: 450px;
+    margin-top: 380px;
+    float: left;
+    justify-content: center;
+}
+
 .login__icons_cad_but {
     display: flex;
     gap: 10px;
     width: 100%;
-    margin-top: -1px;
+    margin-top: -30px;
 }
+
 
 .login__icons_cad .icons__button_cad:nth-child(1) {
     background-color: var(--medium-grey);
+}
+
+.login__icons_senha .icons__button_cad:nth-child(1) {
+    background-color: var(--medium-grey);
+}
+
+.login__icons_senha_2 .icons__button_cad:nth-child(1) {
+    background-color: var(--red);
 }
 
 .login__icons img{
@@ -185,6 +218,31 @@ main {
     cursor: pointer;
     border: none;
     margin-bottom: 5px;
+}
+
+.icons__button_senha {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    margin-bottom: 5px;
+}
+
+.icons__button_game {
+    width: 20%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    margin-bottom: 5px;
+    float: right;
 }
 
 .login__icons .icons__button:nth-child(1) {
@@ -254,7 +312,7 @@ main {
     border-radius: 20px;
     border: none;
     margin-left: 400px;
-    margin-top: -50px;
+    margin-top: -20px;
 }
 
 .login__button svg {
