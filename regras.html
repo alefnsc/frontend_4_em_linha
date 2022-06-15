@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="jquery-3.6.0.js"></script>
+
+    <title>Saguão</title>
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="col-md-12 bg-light order-md-0">
+            <div class = "row">
+                <div class="col-md-6 text-left">
+                    <button id="botaoVoltar" type="button" class="btn btn-primary btn-lg  top-0 start-0" style="margin-top:10px" onclick="history.back()" >Voltar</button>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button id="botaoSair" type="button" class="btn btn-primary btn-lg text-right top-0 start-100" style="margin-top:10px">Sair </button>
+                </div>
+            </div>
+        </div>
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="4Lines.svg" alt="4Lines.svg" width="72" height="72">
+                 <h2>4Lines</h2>
+            <p class="lead">Jogue agora mesmo</p>
+        </div>
+    
+        <div class="row">
+
+            <div id="divTabuleiro"class="row col-md-6 order-md-2 mb-4 align-items-end">
+                <img id="tabuleiroExemplo" src = "#" width="100%" height = "100%" onerror='this.style.display = "none"' onload='this.style.display = "block"' >
+
+                <!--div tabuleiro de teste-->
+            </div>
+
+
+            <div class="col-md-6 order-md-0 " >
+                <p class = "display-4">Regras do Jogo </p>
+                <div class="container-fluid">
+                    <br>
+                    <a href="#" id="regra1" style = "color:black"><p class ="display-5">- No seu turno, escolha uma coluna para jogar a sua peça</p></a>
+                    <a href="#" id="regra2" style = "color:black"><p class= "display-5">- Quando for a vez do adversário, aguarde</p></a>
+                    <a href="#" id="regra3" style = "color:black"><p class= "display-5" >- Forme uma sequência de 4 peças antes de seu adversário</p></a>
+                    <a href="#" id="regra4" style = "color:black"><p class= "display-5" >- As sequências válidas são na horizontal, vertical e nas diagonais</p></a>
+                    <a href="#" id="regra5" style = "color:black"><p class= "display-5" >- Uma coluna cheia não pode ser escolhida para jogar</p></a>
+                </div>
+                <br><br>
+                <div class="align-items-md-center">
+                    <button id="testarAgora" class= "btn btn-primary btn-lg align-items-lg-end" onclick="history.back()" >Jogue agora mesmo!</button>
+                </div>
+            </div>
+
+        
+        </div>
+            
+    </div>
+    <script>
+        $(document).ready(function() {
+            //$("#tabuleiroSinglePlayer").hide();
+            $("#regra1").click(function () {
+                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra1.svg"); 
+            });
+            $("#regra2").click(function () {
+                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra2.svg"); 
+            });
+            $("#regra3").click(function () {
+                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra3.svg"); 
+            });
+            $("#regra4").click(function () {
+                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra4.svg"); 
+            });
+            $("#regra5").click(function () {
+                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra5.svg"); 
+            });
+
+        });
+
+    </script>
+</body>
