@@ -31,12 +31,13 @@
                 <button type="button" id="button_game_back" onclick="location.href='saguao.html'">
                     Voltar para o saguão
                 </button>
+            </span> 
         </div>
         <div>
             <a href="https://www.marvel.com/" target="_blank"><img id="img_patrocinador" src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2019/08/cropped-kevin-feige-is-now-planning-for-mcu-films-through-2025-avengers-4-title-will-speak-to-the-heart-of-the-story-social-1.jpg" width="640" height="400"></a>
         </div>
         <div>
-            <h3 style="margin-top: 100px; margin-left: 50px">Jogador 1 X Jogador 2 | Criar função</h3>
+            <h3 style="margin-top: 100px; margin-left: -45px">Jogador 1 X Jogador 2 | Criar função</h3>
         </div>
     </div>
 </body>
@@ -226,29 +227,36 @@
     function ApresentaMensagem(player) {
         divisao.style.display = 'block';
         acc.style.visibility = 'hidden';
-        document.getElementById('popup').innerHTML = ("Player " + player + " é o vencedor! \n<button id='botao' onclick='window.location.reload(true)'> Jogar novamente </button> \n<button id='botao' onclick=location.href='saguao.html'> Saguão </button>");
+        document.getElementById('popup').innerHTML = ("Player " + player + " é o vencedor!\n<button id='botao' onclick='window.location.reload(true)'> Jogar novamente </button> \n<button id='botao' onclick=location.href='saguao.html'> Saguão </button>");
     }
     //----------------------
 
 </script>
 <style>
 
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     div {
         display: inline-block;
     }
 
-    #div1 {
-        width: 60vw;
-        height: 100vh;
+    #div2 {
+        width: 33.33%;
+        height: 100%;
         float: left;
         padding: clamp(35px, 8%, 70px);
     }
 
-    #div2 {
-        width: 38.5vw;
-        height: 100vh;
+    #div1 {
+        width: 66.6%;
+        height: 100%;
         float: left;
         padding: clamp(35px, 8%, 70px);
+        position: relative;
     }
 
     .playerActionTd {
@@ -275,7 +283,7 @@
 
     #screen {
         margin-top: 5px;
-        margin-left: 100px
+        margin-left: 100px;
     }
 
     #title {
@@ -332,7 +340,7 @@
     #popup {
         width: 100%;
         top: 0;
-        left: 35px;
+        left: 370px;
         background-color: rgb(107, 99, 99);
         color: rgb(0, 0, 0);
         position: absolute;
@@ -371,14 +379,14 @@
     border-radius: 5px;
     cursor: pointer;
     border: none;
-    margin-left: 300px;
+    margin-left: 150px;
     margin-top: -370px;
     }
 
     #img_patrocinador {
         border: 5px solid black;
-        margin-left: -100px;
-        margin-top: -240px;
+        margin-left: -200px;
+        margin-top: -200px;
     }
 
 </style>
