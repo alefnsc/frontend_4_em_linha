@@ -37,7 +37,6 @@ async function PostLogin() {
     //     method: 'POST',
     //     headers: {}, //O erro de CORS ocorria quando preenchia o Headers com Access-Control-Allow-Origin e Content-Type-application/json
     
-    //     //Convertemos antes os valores de lat e lng pois estavam vindo como string, mas no console pareciam ser inteiros, para não dar erro de tipo
     //     body: JSON.stringify(
     //       {
     //         nome: nome,
