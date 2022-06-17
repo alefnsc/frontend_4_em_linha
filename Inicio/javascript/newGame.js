@@ -25,7 +25,6 @@ async function start() {
         setTimeout(start, 5000);
     }
 };
-
 function marcar(player, X) {
     // trazer array campos do back
     if(vez == connection.connectionId){
