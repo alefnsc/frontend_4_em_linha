@@ -8,14 +8,33 @@
     <link rel="icon" type="imagem/png" href="images/icone.png"/>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="./javascript/jquery-3.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./game.css">
+    <link rel="icon" type="imagem/png" href="images/icone.png" />
+    <script src="./javascript/script_cad.js" defer></script>
+    <script src="./javascript/newgame.js" defer></script>
+    <script src="./javascript/server.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.17/signalr.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
     <title>4 em Linha</title>
 </head>
 <body class="bg-light">
+  <nav class="navbar navbar-dark bg-mynav">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">4Lines</a>
+      <button onclick="location.href='index.html'" for="click" class="click-me-exit">Sair</label>
+    </div>
+  </nav>
+  <center>
     <div class="container">
-        <div class="col-md-12 bg-light order-md-1 text-right">
-            <a href="index.html"><button type="button" class="btn btn-primary btn-lg" style="margin-top:10px">Sair</button></a>
-        </div>
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="./images/logo.png" alt="Imagem não encontrada" width="72" height="72">
                  <h2>4Lines</h2>
@@ -67,41 +86,15 @@
                   </button>
             </div>
             
-            <div id="modalPatrocinadores" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="tituloPatrocinadores">Patrocinadores</h5>
-                      <button type="button" class="close" data-dismiss="modalPatrocinadores" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <p>Estes são os patrocinadores desse projeto.</p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modalPatrocinadores">Fechar</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             <div class="col-md-9 order-md-0 " >
-                
-
-            <p class = "display-3">
-                    Bem vindo ao 4 em linha
-                </p>
-                <br>
-                <br>
-
-                <a id="regrasJogo" href="regras.html" class="stretched-link display-4">Regras do Jogo</a>
+                <a id="regrasJogo" href="./regras.html" class="stretched-link display-4">Regras do Jogo</a>
                 <br>
                 <br>
                 <a id="patrocinadores" href="#" class="stretched-link display-4">Patrocinadores</a>
             </div>
         </div>
     </div>
-
+</center>
     <script>
         $(document).ready(function() {
             $("#botaoCancelar").hide();
@@ -113,20 +106,9 @@
                 $("#botaoCancelar").hide();
                 $("#botaoJogar").html("Procurar partida");
             });
-            $("#patrocinadores").click(function() {
-                $("#modalPatrocinadores").show();
-                
-            })
 
         });
-
-        
     </script>
-
-
-
-
-
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

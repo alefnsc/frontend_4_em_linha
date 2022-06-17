@@ -93,7 +93,7 @@ function mostraTabela(atual, player) {
    helper += "</tr></table></center>"
    tabHelper.innerHTML = helper
    //trazer array campos back
-   var html = "<center><table cellspacing='20' cellpadding='20' class='tabelaPrincipal' style='border: none;'>"
+   var html = "<center><table class='tabelaPrincipal' style='border: none;'>"
    for (let i = 0; i < tabuleiro / largura; i++) {
        html += "<tr>"
        for (let j = 0; j < tabuleiro / altura; j++) {
@@ -124,6 +124,10 @@ function mostraTabela(atual, player) {
             campos = retorno
             vez = vezdequem
             mostraTabela(ultimo,player)
+
+            if(encerrada != 0)
+                console.log("Jogador " + player + " venceu!!!");
+
             if(vez == connection.connectionId){
                 document.getElementById('PlayerActionTable').style.visibility="hidden";
             }else{
