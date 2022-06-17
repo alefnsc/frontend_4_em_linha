@@ -6,11 +6,32 @@ const tabJog = document.getElementById('vezJogador')
 const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").build();
+var campos = []
+var vez = 0
+
+for(let i = 0; i < altura * largura; i++)
+{
+    campos[i] = 0
+}
+start()
+async function start() {
+    try {
+        await connection.start();
+        connection.invoke('DistribuiArray',campos,1,1,connection.connectionId)
+        console.log("SignalR Connected.");
+    } catch (err) {
+        console.log(err);
+        setTimeout(start, 5000);
+    }
+};
 
 function marcar(player, X) {
-
     // trazer array campos do back
-
+    if(vez == connection.connectionId){
+        console.log('Não é sua vez')
+        return false
+    }
     if (X > largura || player == 0) {
         return false
     }
@@ -21,15 +42,13 @@ function marcar(player, X) {
         }
         if (campos[ultimoDaAltura] == 0) {
             campos[ultimoDaAltura] = player == 1 ? 1 : 2;
+            connection.invoke('DistribuiArray',campos,ultimoDaAltura,player == 1 ? 2 : 1,connection.connectionId)
             var Y = altura - (i + 1);
-            setCampos(campos, player, X, Y);
             mostraTabela(ultimoDaAltura, player == 1 ? 2 : 1);
             return false
         }
     }
 }
-
-
 function mostraTabela(atual, player) {
    // Vez Jogador
    var vez = " Vez do Jogador " + player
@@ -44,10 +63,7 @@ function mostraTabela(atual, player) {
    }
    helper += "</tr></table>"
    tabHelper.innerHTML = helper
-
    //trazer array campos back
-   campos = getCampos();
-
    var html = "<table class='tabelaPrincipal'>"
    for (let i = 0; i < tabuleiro / largura; i++) {
        html += "<tr>"
@@ -85,3 +101,10 @@ function mostraTabela(atual, player) {
         document.getElementById('popup').innerHTML = ("Player " + player + " é o vencedor!\n<button id='botao' onclick='window.location.reload(true)'> Jogar novamente </button> \n<button id='botao_2' onclick=location.href='saguao.html'> Saguão </button>");
     }
     //----------------------
+
+        connection.on("DistribuiArray", (retorno, ultimo, player, vezdequem) => {
+            campos = retorno
+            vez = vezdequem
+            mostraTabela(ultimo,player)
+        });
+        
