@@ -6,15 +6,31 @@ const tabJog = document.getElementById('vezJogador')
 const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").build();
 var campos = []
 var vez = 0
+
+function sair() {
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "A partida será contabilizada como derrota!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sair'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            location.href='saguao.html';
+        }
+      })
+}
 
 for(let i = 0; i < altura * largura; i++)
 {
     campos[i] = 0
 }
-start()
+start();
 async function start() {
     try {
         await connection.start();
@@ -29,6 +45,13 @@ async function start() {
 function marcar(player, X) {
     // trazer array campos do back
     if(vez == connection.connectionId){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Não é sua vez',
+            timer: 2000,
+            timerProgressBar: true,
+        })
         return false
     }
     if (X > largura || player == 0) {
@@ -49,39 +72,43 @@ function marcar(player, X) {
     }
 }
 function mostraTabela(atual, player) {
-   // Vez Jogador
-   var vez = " Vez do Jogador " + player
-   tabJog.innerHTML = vez
 
+    if(vez == connection.connectionId){
+        tabJog.innerHTML =  'Vez do adversário '
+        }
+    else {
+        tabJog.innerHTML =  'Sua vez'
+    }
    //Marcador ficha
-   var helper = "<table id='PlayerActionTable'><tr>";
+   var helper = "<center><table style='border: none;' id='PlayerActionTable'><tr>";
+
    for (let i = 0; i < largura; i++) {
        helper += "<td class='playerActionTd'>"
        helper += "<div class='playerAction playerAction" + player + "' onClick='marcar(" + player + "," + i + ")'></div>"
        helper += "</td>"
    }
-   helper += "</tr></table>"
+   helper += "</tr></table></center>"
    tabHelper.innerHTML = helper
    //trazer array campos back
-   var html = "<table class='tabelaPrincipal'>"
+   var html = "<center><table cellspacing='20' cellpadding='20' class='tabelaPrincipal' style='border: none;'>"
    for (let i = 0; i < tabuleiro / largura; i++) {
        html += "<tr>"
        for (let j = 0; j < tabuleiro / altura; j++) {
            if (campos[i * largura + j] == 0) {
-               html += "<td> <div player='0' id='" + (i * largura + j) + "' class='white campo'></div>"
+               html += "<td style='border: none;'> <div style='border: none;' player='0' id='" + (i * largura + j) + "' class='white campo'></div>"
            }
            else if (campos[i * largura + j] == 1) {
-               html += "<td> <div player='1' id='" + (i * largura + j) + "' class='red campo'></div>"
+               html += "<td style='border: none;'> <div style='border: none;' player='1' id='" + (i * largura + j) + "' class='red campo'></div>"
            }
            else {
-               html += "<td> <div player='2' id='" + (i * largura + j) + "' class='blue campo'></div>"
+               html += "<td style='border: none;'> <div style='border: none;' player='2' id='" + (i * largura + j) + "' class='blue campo'></div>"
            }
 
            html += "</td>"
        }
        html += "</tr>"
    }
-   html += "</table>"
+   html += "</table></center>"
    screen.innerHTML = html
 
    if (atual != -1) {
@@ -89,17 +116,6 @@ function mostraTabela(atual, player) {
        document.getElementById(atual).setAttribute("style", "transform: translateY(-" + deslocar + "px);animation: peca 2s forwards'")
    }
 }
-    //Juka implementations
-
-    var divisao = document.querySelector('#popup');
-    var acc = document.querySelector('#helper');
-
-    function ApresentaMensagem(player) {
-        divisao.style.display = 'block';
-        acc.style.visibility = 'hidden';
-        document.getElementById('popup').innerHTML = ("Player " + player + " é o vencedor!\n<button id='botao' onclick='window.location.reload(true)'> Jogar novamente </button> \n<button id='botao_2' onclick=location.href='saguao.html'> Saguão </button>");
-    }
-    //----------------------
 
         connection.on("DistribuiArray", (retorno, ultimo, player,x, y, vezdequem, encerrada) => {
             campos = retorno
@@ -118,4 +134,30 @@ function mostraTabela(atual, player) {
         connection.on("InicioPartida", (retorno) => {
             console.log(retorno)
         });
-        
+
+$(function () {
+  var timerId = 0;
+  var ctr=0;
+  var max=10;
+
+  timerId = setInterval(function () {
+    // interval function
+    ctr++;
+    $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
+
+    // max reached?
+    if (ctr==max){
+      clearInterval(timerId);
+      ctr=0;
+      $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
+
+    }
+
+  }, 1500);
+
+
+  $('.btn-default').click(function () {
+    clearInterval(timerId);
+  });
+
+});

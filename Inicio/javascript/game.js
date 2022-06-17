@@ -148,7 +148,7 @@ const audio = document.querySelector('audio')
         tabJog.innerHTML = html
 
             //setInterval(mostraTabela , 1000)
-        var helper = "<table><tr>";
+        var helper =  "<table><tr>";
         for (let i = 0; i < largura; i++) {
             helper += "<td class='playerActionTd'>"
             helper += "<div class='playerAction playerAction" + player + "' onClick='marcar(" + player + "," + i + ")'></div>"
