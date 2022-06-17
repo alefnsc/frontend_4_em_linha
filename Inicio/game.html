@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./game.css">
-    <link rel="icon" type="imagem/png" href="images/icone.png"/>
+    <link rel="icon" type="imagem/png" href="images/icone.png" />
     <script src="./javascript/script_cad.js" defer></script>
     <script src="./javascript/newgame.js" defer></script>
     <script src="./javascript/server.js" defer></script>
@@ -18,54 +23,61 @@
     <title>4 em linha</title>
 </head>
 
-<body>
+<body style="margin: 0 auto;">
+    <audio src="./wav/win.wav"></audio>
+    <audio src="./wav/loss.wav"></audio>
+    <nav style="margin-bottom: 60px; " class="navbar navbar-dark bg-mynav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">4Lines</a>
+            <button onclick="javascript: sair();" for="click" class="click-me">Voltar para o saguão</label>
+        </div>
+    </nav>
+    <center>
+        <table style="width: 100%; border: none; background: none;">
+            <tr>
+                <td>
+                    <div style=" margin-top: 60px;  display: block; margin: 0 auto; text-align: center;"
+                        class="container">
+                        <h1 id="vezJogador"></h1>
+                    </div>
+                    <center>
+                        <div class="container" style="max-width: 700px; padding: 20px;">
+                            <hr>
 
-    <div id="div1">
-        <audio src="./wav/win.wav"></audio>
-        <audio src="./wav/loss.wav"></audio>
-        <div id="title"><H1>4 EM LINHA</H1></div>
-        <div align="center" style="display: block; margin: 0 auto; text-align: center; padding-right: 230px; padding-top: 70px;"><h1 id="vezJogador"></h1></div>
-        <div id="helper" style="margin-left: 100px"></div>
-        <div id="screen"></div>
-        <div id="bloco">
-            <div id="popup"></div>
-        </div>
+                            <div align="center" class="progress" id="blips">
+                                <div style="padding: 10px;" class="progress-bar" role="progressbar">
+                                    <span class="sr-only"></span>
+                                </div>
+                            </div>
 
-        <div><h1 style="margin-left: 280px; margin-top: 20px;">Tempo | Criar função</h1></div>
-    </div>
-    <div id="div2">
-        <div>
-            <input type="checkbox" id="click">
-            <label for="click" class="click-me" >Voltar para o saguão</label>
-            <div class="content">
-                <div class="header">
-                    <h2>Deseja realmente sair?</h2>
-                    <label for="click" class="fas fa-times"></label>
-                </div>
-                <div id="parag">
-                    <p>A partida vigente será contabilizada como derrota</p>
-                    <div class="line"></div>
-                </div>
-                <label for="click" class="stay-btn">Ficar</label>
-                <label for="click" class="close-btn" onclick="location.href='saguao.html'">Sair</label>
-            </div>
-        </div>
-        <!--
-        <div>
-            <span class="login__icons_cad">
-                <button type="button" id="button_game_back" onclick="location.href='saguao.html'">
-                    Voltar para o saguão
-                </button>
-            </span>
-        </div>
-        -->
-        <div>
-            <a href="https://www.marvel.com/" target="_blank"><img id="img_patrocinador" src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2019/08/cropped-kevin-feige-is-now-planning-for-mcu-films-through-2025-avengers-4-title-will-speak-to-the-heart-of-the-story-social-1.jpg" width="640" height="400"></a>
-        </div>
-        <div>
-            <h3 style="margin-top: 100px; margin-left: -45px">Jogador 1 X Jogador 2 | Criar função</h3>
-        </div>
-    </div>
+                        </div>
+                    </center>
+                    <div id="helper" style="display: block; margin: 0 auto; text-align: center;"></div>
+                    <div id="screen" style="border: none; display: block; margin: 0 auto; text-align: center;"></div>
+                    <div style="border: none; display: block; margin: 0 auto; text-align: center; padding-top: 10px;">
+                        <h3>Jogador 1 X Jogador 2</h3>
+                    </div>
+                </td>
+
+                <td>
+
+                    <div style="display: block; margin: 0 auto;  text-align: center;">
+                        <a href="https://www.marvel.com/" target="_blank"><img
+                                style="margin-bottom: 60px; border: none; max-width: 500px; width: 100%; height: auto;"
+                                id="img_patrocinador"
+                                src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2019/08/cropped-kevin-feige-is-now-planning-for-mcu-films-through-2025-avengers-4-title-will-speak-to-the-heart-of-the-story-social-1.jpg"></a>
+                    </div>
+
+                </td>
+            </tr>
+
+        </table>
+
+
+
+
+    </center>
+
 </body>
 
 

@@ -1,4 +1,3 @@
-
     body {
         margin: 0;
         padding: 0;
@@ -57,10 +56,10 @@
     }
 
     .tabelaPrincipal {
-        border: solid 1px black;
+        border: solid 0px rgb(42, 42, 42);
         width: 700px;
         height: 600px;
-        background-size: 700px 600px;
+        background-size: auto;
         background-image: url("https://cdn.ome.lt/42GZQPInUNFKS4wAkk1_s6yViKU=/1200x630/smart/extras/conteudos/fortnite-x-marvel-zero-war-announcement-article-card_S0F5i0s.jpg");
     }
 
@@ -70,12 +69,12 @@
         }
     }
 
-    td {
+    .tabelaPrincipal td {
         border: solid 1px black;
         background-color: white;
         text-align: center;
         border-radius: 50%;
-        padding: 0;
+        padding: 20;
     }
 
     .campo {
@@ -101,52 +100,6 @@
         background-size: 98px 100px;
         
     }
-
-    #popup {
-        width: 100%;
-        top: 0;
-        left: 370px;
-        background-color: rgb(107, 99, 99);
-        color: rgb(0, 0, 0);
-        position: absolute;
-        display: none;
-        text-align: center;
-        border-radius: 20px;
-        padding: 20px;
-    }
-
-    #botao {
-        margin-top: 10px;
-        width: 100%;
-        align-items: center;
-        justify-content: center;
-        height: 35px;
-        border-radius: 25px;
-        cursor: pointer;
-        border: 0.1px solid black;
-    }
-
-    #botao_2 {
-        margin-top: 3px;
-        width: 100%;
-        align-items: center;
-        justify-content: center;
-        height: 35px;
-        border-radius: 25px;
-        cursor: pointer;
-        border: 0.1px solid black;
-    }
-
-    #bloco {
-        width: 200px;
-        height: 70px;
-        top: 50%;
-        left: 50%;
-        margin-top: -100px;
-        margin-left: -100px;
-        position: absolute;
-    }
-
     #button_game_back {
     width: 200px;
     display: flex;
@@ -162,8 +115,6 @@
 
     #img_patrocinador {
         border: 5px solid black;
-        margin-left: -200px;
-        margin-top: 100px;
     }
 
     .center {
