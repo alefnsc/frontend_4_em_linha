@@ -18,6 +18,7 @@ start()
 async function start() {
     try {
         await connection.start();
+        connection.invoke('ConectarSala',connection.connectionId,"batata")
         connection.invoke('DistribuiArray',campos,1,1,connection.connectionId)
         console.log("SignalR Connected.");
     } catch (err) {
@@ -28,7 +29,6 @@ async function start() {
 function marcar(player, X) {
     // trazer array campos do back
     if(vez == connection.connectionId){
-        console.log('Não é sua vez')
         return false
     }
     if (X > largura || player == 0) {
@@ -54,7 +54,7 @@ function mostraTabela(atual, player) {
    tabJog.innerHTML = vez
 
    //Marcador ficha
-   var helper = "<table><tr>";
+   var helper = "<table id='PlayerActionTable'><tr>";
    for (let i = 0; i < largura; i++) {
        helper += "<td class='playerActionTd'>"
        helper += "<div class='playerAction playerAction" + player + "' onClick='marcar(" + player + "," + i + ")'></div>"
@@ -105,5 +105,13 @@ function mostraTabela(atual, player) {
             campos = retorno
             vez = vezdequem
             mostraTabela(ultimo,player)
+            if(vez == connection.connectionId){
+                document.getElementById('PlayerActionTable').style.visibility="hidden";
+            }else{
+                document.getElementById('PlayerActionTable').style.visibility="normal";
+            }
+        });
+        connection.on("InicioPartida", (retorno) => {
+            console.log(retorno)
         });
         
