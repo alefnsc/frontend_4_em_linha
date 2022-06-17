@@ -8,21 +8,34 @@
     <link rel="icon" type="imagem/png" href="images/icone.png"/>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="./javascript/jquery-3.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./game.css">
+    <link rel="icon" type="imagem/png" href="images/icone.png" />
+    <script src="./javascript/script_cad.js" defer></script>
+    <script src="./javascript/newgame.js" defer></script>
+    <script src="./javascript/server.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.17/signalr.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
     <title>4 em Linha</title>
 </head>
 <body class="bg-light">
-    <div class="container">
-        <div class="col-md-12 bg-light order-md-0">
-            <div class = "row">
-                <div class="col-md-6 text-left">
-                    <button id="botaoVoltar" type="button" class="btn btn-primary btn-lg  top-0 start-0" style="margin-top:10px" onclick="history.back()" >Voltar</button>
-                </div>
-                <div class="col-md-6 text-right">
-                    <a href="index.html"><button id="botaoSair" type="button" class="btn btn-primary btn-lg text-right top-0 start-100" style="margin-top:10px">Sair </button></a>
-                </div>
-            </div>
+    <nav class="navbar navbar-dark bg-mynav">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">4Lines</a>
+          <button onclick="location.href='saguao.html'" for="click" class="click-me">Voltar</label>
         </div>
+      </nav>
+      <center>
+    <div class="container">
+
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="./images/logo.png" alt="4Lines.svg" width="72" height="72">
                  <h2>4Lines</h2>
@@ -42,42 +55,16 @@
                 <p class = "display-4">Regras do Jogo </p>
                 <div class="container-fluid">
                     <br>
-                    <a href="#" id="regra1" style = "color:black"><p class ="display-5">- No seu turno, escolha uma coluna para jogar a sua peça</p></a>
-                    <a href="#" id="regra2" style = "color:black"><p class= "display-5">- Quando for a vez do adversário, aguarde</p></a>
-                    <a href="#" id="regra3" style = "color:black"><p class= "display-5" >- Forme uma sequência de 4 peças antes de seu adversário</p></a>
-                    <a href="#" id="regra4" style = "color:black"><p class= "display-5" >- As sequências válidas são na horizontal, vertical e nas diagonais</p></a>
-                    <a href="#" id="regra5" style = "color:black"><p class= "display-5" >- Uma coluna cheia não pode ser escolhida para jogar</p></a>
+                    <p class ="display-5">- No seu turno, escolha uma coluna para jogar a sua peça</p>
+                    <p class = "display-5">- Quando for a vez do adversário, aguarde</p>
+                    <p class = "display-5" >- Forme uma sequência de 4 peças antes de seu adversário</p>
+                    <p class = "display-5" >- As sequências válidas são na horizontal, vertical e nas diagonais</p>
+                    <p class = "display-5" >- Uma coluna cheia não pode ser escolhida para jogar</p>
                 </div>
-                <br><br>
-                <div class="align-items-md-center">
-                    <button id="testarAgora" class= "btn btn-primary btn-lg align-items-lg-end" onclick="history.back()" >Jogue agora mesmo!</button>
-                </div>
+
             </div>
-
-        
         </div>
-            
     </div>
-    <script>
-        $(document).ready(function() {
-            //$("#tabuleiroSinglePlayer").hide();
-            $("#regra1").click(function () {
-                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra1.svg"); 
-            });
-            $("#regra2").click(function () {
-                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra2.svg"); 
-            });
-            $("#regra3").click(function () {
-                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra3.svg"); 
-            });
-            $("#regra4").click(function () {
-                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra4.svg"); 
-            });
-            $("#regra5").click(function () {
-                $("#tabuleiroExemplo").prop('src', "regrasjogo/regra5.svg"); 
-            });
-
-        });
-
-    </script>
+</center>
 </body>
+</html>
