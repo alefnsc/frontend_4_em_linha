@@ -34,6 +34,7 @@ start();
 async function start() {
     try {
         await connection.start();
+        connection.invoke('ConectarSala',connection.connectionId,"batata")
         connection.invoke('DistribuiArray',campos,1,1,connection.connectionId)
         console.log("SignalR Connected.");
     } catch (err) {
@@ -79,8 +80,9 @@ function mostraTabela(atual, player) {
     else {
         tabJog.innerHTML =  'Sua vez'
     }
+   //Marcador ficha
+   var helper = "<center><table style='border: none;' id='PlayerActionTable'><tr>";
 
-   var helper = "<center><table style='border: none;'><tr>";
    for (let i = 0; i < largura; i++) {
        helper += "<td class='playerActionTd'>"
        helper += "<div class='playerAction playerAction" + player + "' onClick='marcar(" + player + "," + i + ")'></div>"
@@ -120,18 +122,26 @@ function mostraTabela(atual, player) {
             campos = retorno
             vez = vezdequem
             mostraTabela(ultimo,player)
+            if(vez == connection.connectionId){
+                document.getElementById('PlayerActionTable').style.visibility="hidden";
+            }else{
+                document.getElementById('PlayerActionTable').style.visibility="normal";
+            }
         });
-  
+        connection.on("InicioPartida", (retorno) => {
+            console.log(retorno)
+        });
+
 $(function () {
   var timerId = 0;
   var ctr=0;
   var max=10;
-  
+
   timerId = setInterval(function () {
     // interval function
     ctr++;
     $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
-    
+
     // max reached?
     if (ctr==max){
       clearInterval(timerId);
@@ -139,7 +149,7 @@ $(function () {
       $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
 
     }
-    
+
   }, 1500);
 
 
