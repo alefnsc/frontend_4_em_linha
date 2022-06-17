@@ -6,7 +6,7 @@ const tabJog = document.getElementById('vezJogador')
 const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").build();
 var campos = []
 var vez = 0
 
@@ -35,7 +35,7 @@ async function start() {
     try {
         await connection.start();
         connection.invoke('ConectarSala',connection.connectionId,"batata")
-        connection.invoke('DistribuiArray',campos,1,1,connection.connectionId)
+        connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0)
         console.log("SignalR Connected.");
     } catch (err) {
         console.log(err);
@@ -45,6 +45,7 @@ async function start() {
 function marcar(player, X) {
     // trazer array campos do back
     if(vez == connection.connectionId){
+        console.log('test')
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -64,8 +65,9 @@ function marcar(player, X) {
         }
         if (campos[ultimoDaAltura] == 0) {
             campos[ultimoDaAltura] = player == 1 ? 1 : 2;
-            connection.invoke('DistribuiArray',campos,ultimoDaAltura,player == 1 ? 2 : 1,connection.connectionId)
             var Y = altura - (i + 1);
+            connection.invoke('DistribuiArray',campos,ultimoDaAltura,player == 1 ? 2 : 1,X,Y,connection.connectionId,0)
+            
 
             mostraTabela(ultimoDaAltura, player == 1 ? 2 : 1);
             return false
@@ -118,7 +120,7 @@ function mostraTabela(atual, player) {
    }
 }
 
-        connection.on("DistribuiArray", (retorno, ultimo, player, vezdequem) => {
+        connection.on("DistribuiArray", (retorno, ultimo, player, vezdequem, encerrado) => {
             campos = retorno
             vez = vezdequem
             mostraTabela(ultimo,player)
