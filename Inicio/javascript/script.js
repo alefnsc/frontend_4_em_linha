@@ -16,7 +16,7 @@ const handleFocusOut = ({ target }) => {
 const handleChange = ({  }) => {
     const [username, password, name] = inputs;
 
-    if (username.value && password.value.length >= 8) {
+    if (username.value && password.value.length >= 4) {
         button.removeAttribute('disabled');
     } else {
         button.setAttribute('disabled', '');
@@ -27,24 +27,36 @@ inputs.forEach((input) => input.addEventListener('focus', handleFocus));
 inputs.forEach((input) => input.addEventListener('focusout', handleFocusOut));
 inputs.forEach((input) => input.addEventListener('input', handleChange));
 
-async function PostLogin() {
+function PostLogin() {
     var nome = document.getElementById('nome').value;
-    console.log(nome)
-    var senha = document.getElementById('senha').value;
-    console.log(senha)
-    await new Promise(r => setTimeout(r, 2000));
-    // const response = await fetch(api_url, {
-    //     method: 'POST',
-    //     headers: {}, //O erro de CORS ocorria quando preenchia o Headers com Access-Control-Allow-Origin e Content-Type-application/json
-    
-    //     body: JSON.stringify(
-    //       {
-    //         nome: nome,
-    //         senha: senha
-    //       }
-    //     )
-    //   })
-    window.location.href = "saguao.html";
+    var senha = document.getElementById('senha').value;  
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "https://localhost:44347/api/Usuario/Validacao");
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    xhttp.send(JSON.stringify({ 
+        "nomeUsuario": nome, "senha": senha
+    }));
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            const objects = JSON.parse(this.responseText);
+            window.sessionStorage.setItem('nomeUsuario', objects['nomeUsuario']);
+            window.sessionStorage.setItem('id', objects['id']);
+            if (objects['tipoUsuario'] == 1){
+                window.location.href = "../Crud/index.html";
+            }
+            else {
+                window.location.href = "saguao.html";
+            }
+        }
+        else {
+            //const objects = JSON.parse(this.responseText);
+            //Swal.fire(objects['message']);
+            console.log("Inválido")
+        }
+    }
 }
 
 

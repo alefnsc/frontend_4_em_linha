@@ -9,7 +9,7 @@ const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost
 var campos = []
 var vez = 0
 
-function sair() {
+function voltar() {
     Swal.fire({
         title: 'Tem certeza?',
         text: "A partida será contabilizada como derrota!",

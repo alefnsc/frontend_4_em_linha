@@ -35,11 +35,11 @@
   <nav class="navbar navbar-dark bg-mynav" style="margin-bottom: 50px; ">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">4Lines</a>
-      <button onclick="location.href='index.html'" for="click" class="click-me-exit">Sair</label>
+      <button onclick="javascript: sair();"  for="click" class="click-me-exit">Sair</label>
     </div>
   </nav>
   <center>
-    <div class="container" style="padding: 20px; margin:0 auto; max-width: 800px; width:100%; display: block;" <div
+    <div class="container" style="padding: 20px; margin:0 auto; max-width: 800px; width:100%; display: block;"
       class="py-5 text-center">
       <img class="d-block mx-auto mb-4" src="./images/logo.png" alt="Imagem não encontrada" width="72" height="72">
       <h2>4Lines</h2>
@@ -72,16 +72,16 @@
 
 
       <div align="left" style="padding-left: 30px;" class="container">
-        Olá, $(nome)!
+        Olá, <div id="nomeUsuario"></div>
         <br>
       </div>
 
 
       <div align="left" style="padding-left: 30px;" class="container">
         <br>
-        Partidas Ganhas:
+        Partidas Ganhas: <div id="numeroVitorias"></div>
         <br>
-        Partidas Jogadas:
+        Partidas Jogadas: <div id="numeroPartidas"></div>
 
       </div>
 
