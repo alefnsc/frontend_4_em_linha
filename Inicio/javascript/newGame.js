@@ -1,12 +1,11 @@
 const audio = document.querySelector('audio')
-audio.currentTime = 0
 const screen = document.getElementById('screen')
 const tabHelper = document.getElementById('helper')
 const tabJog = document.getElementById('vezJogador')
 const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").withAutomaticReconnect().build();
 var campos = []
 var vez = 0
 
