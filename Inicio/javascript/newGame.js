@@ -6,7 +6,7 @@ const tabJog = document.getElementById('vezJogador')
 const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").build();
 var campos = []
 var vez = 0
 
@@ -120,13 +120,50 @@ function mostraTabela(atual, player) {
    }
 }
 
-        connection.on("DistribuiArray", (retorno, ultimo, player, vezdequem, encerrado) => {
+        connection.on("DistribuiArray", (retorno, ultimo, player, vezdequem, encerrada) => {
             campos = retorno
             vez = vezdequem
             mostraTabela(ultimo,player)
 
-            if(encerrada != 0)
-                console.log("Jogador " + player + " venceu!!!");
+            if (encerrada != 0 && encerrada != 3)
+            {
+                Swal.fire({
+                    icon: 'info',
+                    title: "Jogador " + player + " venceu!!!",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Jogar Novamente',
+                    cancelButtonText: 'Voltar para o saguão',
+                    reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                        //JOGAR NOVAMENTE
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            location.href='saguao.html';
+                        }
+                    })
+            }
+
+            if (encerrada == 3)
+            {
+                Swal.fire({
+                    icon: 'info',
+                    title: "Empate",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Jogar Novamente',
+                    cancelButtonText: 'Voltar para o saguão',
+                    reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                        //JOGAR NOVAMENTE
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            location.href='saguao.html';
+                        }
+                    })
+            }
 
             if(vez == connection.connectionId){
                 document.getElementById('PlayerActionTable').style.visibility="hidden";
