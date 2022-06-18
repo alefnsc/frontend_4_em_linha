@@ -6,11 +6,11 @@ const tabJog = document.getElementById('vezJogador')
 const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").build();
 var campos = []
 var vez = 0
 
-function sair() {
+function voltar() {
     Swal.fire({
         title: 'Tem certeza?',
         text: "A partida será contabilizada como derrota!",
