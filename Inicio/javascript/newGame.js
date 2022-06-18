@@ -6,7 +6,7 @@ const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
 
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").withAutomaticReconnect().build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").withAutomaticReconnect().build();
 var campos = []
 var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
@@ -32,37 +32,37 @@ for(let i = 0; i < altura * largura; i++)
     campos[i] = 0
 }
 start();
-async function start() {
-    try {
-        await connection.start();
-        if (connection.state === signalR.HubConnectionState.Connected) {
-            window.sessionStorage.setItem('connectionId', connection.connectionId);
-            console.log("SignalR Connected.");
-        }
-        else {
-            connection.invoke('ConectarSala',window.sessionStorage.getItem("connectionId"), nomeUsuario)
-        }
-        //connection.invoke('ConectarSala',connection.connectionId, nomeUsuario)
-        connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0)
-        console.log("SignalR Connected.");
-    } catch (err) {
-        console.assert(connection.state === signalR.HubConnectionState.Disconnected);
-        console.log(err);
-        setTimeout(() => start(), 5000);
-    }
-};
-
 // async function start() {
 //     try {
 //         await connection.start();
-//         connection.invoke('ConectarSala',connection.connectionId, nomeUsuario)
+//         if (connection.state === signalR.HubConnectionState.Connected) {
+//             window.sessionStorage.setItem('connectionId', connection.connectionId);
+//             console.log("SignalR Connected.");
+//         }
+//         else {
+//             connection.invoke('ConectarSala',window.sessionStorage.getItem("connectionId"), nomeUsuario)
+//         }
+//         //connection.invoke('ConectarSala',connection.connectionId, nomeUsuario)
 //         connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0)
 //         console.log("SignalR Connected.");
 //     } catch (err) {
+//         console.assert(connection.state === signalR.HubConnectionState.Disconnected);
 //         console.log(err);
-//         setTimeout(start, 5000);
+//         setTimeout(() => start(), 5000);
 //     }
 // };
+
+async function start() {
+    try {
+        await connection.start();
+        connection.invoke('ConectarSala',connection.connectionId, nomeUsuario)
+        connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0)
+        console.log("SignalR Connected.");
+    } catch (err) {
+        console.log(err);
+        setTimeout(start, 5000);
+    }
+};
 
 function marcar(player, X) {
     // trazer array campos do back
