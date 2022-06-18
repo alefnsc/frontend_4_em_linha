@@ -52,9 +52,9 @@ function PostLogin() {
             }
         }
         else {
-            //const objects = JSON.parse(this.responseText);
-            //Swal.fire(objects['message']);
-            console.log("Inválido")
+            const objects = JSON.parse(this.responseText);
+            console.log(objects)
+            Swal.fire(objects['message']);
         }
     }
 }

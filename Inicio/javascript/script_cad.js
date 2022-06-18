@@ -1,6 +1,6 @@
 const inputs = document.querySelectorAll('.input');
 const button = document.querySelector('.login__button_cad');
-document.getElementById('nomeUsuario').innerText = window.sessionStorage.getItem('nomeUsuario');
+
 
 const handleFocus = ({ target }) => {
     const span = target.previousElementSibling;
@@ -17,7 +17,7 @@ const handleFocusOut = ({ target }) => {
 const handleChange = ({  }) => {
     const [username_cad, password_cad, email_cad] = inputs;
 
-    if (username_cad.value && password_cad.value.length >= 8 && email_cad.value) {
+    if (username_cad.value && password_cad.value.length >= 4 && email_cad.value) {
         button.removeAttribute('disabled');
     } else {
         button.setAttribute('disabled', '');
@@ -27,24 +27,6 @@ const handleChange = ({  }) => {
 inputs.forEach((input) => input.addEventListener('focus', handleFocus));
 inputs.forEach((input) => input.addEventListener('focusout', handleFocusOut));
 inputs.forEach((input) => input.addEventListener('input', handleChange));
-
-
-GetPartidas()
-function GetPartidas() {
-
-    const xhttp = new XMLHttpRequest();
-    const id = window.sessionStorage.getItem('id');
-    xhttp.open("GET", "https://localhost:44347/api/Usuario/" + id);
-    xhttp.send();
-
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            const objects = JSON.parse(this.responseText);
-            document.getElementById('numeroPartidas').innerText = objects['numeroPartidas']
-            document.getElementById('numeroVitorias').innerText = objects['numeroVitorias']
-        }
-    }
-}
 
 function sair() {
     Swal.fire({
@@ -61,4 +43,53 @@ function sair() {
             location.href='index.html';
         }
       })
+}
+
+function PostCadastro() {
+    var nome = document.getElementById('nome_cad').value;
+    var senha = document.getElementById('senha_cad').value;  
+    var email = document.getElementById('email').value;  
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "https://localhost:44347/api/Usuario");
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    xhttp.send(JSON.stringify({ 
+        "nomeUsuario": nome, "email": email, "senha": senha
+    }));
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 201) {
+            const objects = JSON.parse(this.responseText);
+            console.log(objects)
+            window.sessionStorage.setItem('nomeUsuario', objects['nomeUsuario']);
+            window.sessionStorage.setItem('id', objects['id']);
+            window.location.href = "saguao.html";
+        }
+        else {
+            const objects = JSON.parse(this.responseText);
+            Swal.fire(objects['message']);
+        }
+    }
+}
+
+GetPartidas()
+function GetPartidas() {
+    const id = window.sessionStorage.getItem('id');
+    if (id != null) {
+        const xhttp = new XMLHttpRequest();
+        
+        xhttp.open("GET", "https://localhost:44347/api/Usuario/" + id);
+        xhttp.send();
+    
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                const objects = JSON.parse(this.responseText);
+                document.getElementById('numeroPartidas').innerText = objects['numeroPartidas']
+                document.getElementById('numeroVitorias').innerText = objects['numeroVitorias']
+                document.getElementById('nomeUsuario').innerText = objects['nomeUsuario']
+            }
+        }
+    }
+
 }
