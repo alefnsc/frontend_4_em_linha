@@ -33,33 +33,20 @@ for(let i = 0; i < altura * largura; i++)
     campos[i] = 0
 }
 
-//start();
+jogarNovamente();
 
-// async function start() {
-//     try {
-//         await connection.start();
-//         if (connection.state === signalR.HubConnectionState.Connected) {
-//             window.sessionStorage.setItem('connectionId', connection.connectionId);
-//             console.log("SignalR Connected.");
-//         }
-//         else {
-//             connection.invoke('ConectarSala',window.sessionStorage.getItem("connectionId"), nomeUsuario)
-//         }
-//         //connection.invoke('ConectarSala',connection.connectionId, nomeUsuario)
-//         connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0)
-//         console.log("SignalR Connected.");
-//     } catch (err) {
-//         console.assert(connection.state === signalR.HubConnectionState.Disconnected);
-//         console.log(err);
-//         setTimeout(() => start(), 5000);
-//     }
-// };
+function jogarNovamente() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const jogar = urlParams.get('jogarNovamente');
+    if (jogar == 1) {
+        document.getElementById("botaoJogar").click();
+    }
+}
 
 async function start() {
     try {
         await connection.start();
         connection.invoke('ConectarSala',connection.connectionId, nomeUsuario)
-        //connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0)
         console.log("SignalR Connected.");
     } catch (err) {
         console.log(err);
@@ -68,35 +55,34 @@ async function start() {
 };
 
 async function carregarTabuleiro() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const connectonIdUrl = urlParams.get('connectionId');
-    console.log(connectonIdUrl);
+    const connectonIdOld = window.sessionStorage.getItem("connectionId");
+    console.log(connectonIdOld);
 
     await connection.start();
+    await connection.invoke("ConsertaConnectionId", connection.connectionId, connectonIdOld);
 
-    // var strConnection = window.sessionStorage.getItem("connection");
-    // console.log(strConnection);
-    // var jsonConnection = JSON.parse(strConnection);
-    // console.log(jsonConnection);
-    // connection = jsonConnection;
+    window.sessionStorage.setItem("connectionId", connection.connectionId);
 
-    // await connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0);
-    // await connection.invoke('SolicitarDadosPartida', connection.connectionId);
-
-    // await connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
-    //     document.getElementById("jogador1").innerText = jogador1['nickName'];
-    //     document.getElementById("jogador2").innerText = jogador2['nickName'];
-    //     console.log(dadosPatrocinador);
-    // });
+    await connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0);
+    await connection.invoke('SolicitarDadosPartida', connection.connectionId);
 }
+
+connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
+    document.getElementById("jogador1").innerText = jogador1['nickName'];
+    document.getElementById("jogador2").innerText = jogador2['nickName'];
+    console.log(jogador1);
+    console.log(jogador2);
+    console.log(dadosPatrocinador);
+});
 
 async function disconnected() {
     await connection.invoke('DesconectarSala', connection.connectionId);
+    window.sessionStorage.removeItem("connectionId");
     await connection.stop();
 }
 
 connection.on("adversarioDesistiu", (retorno) => { // fazer modal falando que jogador adiversario desistiu
-    console.log(retorno);
+    alert(retorno);
 });
 
 function testeObjetoSignalR() {
@@ -197,7 +183,7 @@ function mostraTabela(atual, player) {
             {
                 Swal.fire({
                     icon: 'info',
-                    title: "Jogador " + player + " venceu!!!",
+                    title: "Jogador " + document.getElementById("jogador" + player).innerText + " venceu!!!",
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -205,8 +191,9 @@ function mostraTabela(atual, player) {
                     cancelButtonText: 'Voltar para o saguão',
                     reverseButtons: true
                     }).then((result) => {
+                        window.sessionStorage.removeItem("connectionId");
                         if (result.isConfirmed) {
-                        //JOGAR NOVAMENTE
+                            location.href='saguao.html?jogarNovamente=1';
                         } else if (result.dismiss === Swal.DismissReason.cancel) {
                             location.href='saguao.html';
                         }
@@ -225,8 +212,9 @@ function mostraTabela(atual, player) {
                     cancelButtonText: 'Voltar para o saguão',
                     reverseButtons: true
                     }).then((result) => {
+                        window.sessionStorage.removeItem("connectionId");
                         if (result.isConfirmed) {
-                        //JOGAR NOVAMENTE
+                            location.href='saguao.html?jogarNovamente=1';
                         } else if (result.dismiss === Swal.DismissReason.cancel) {
                             location.href='saguao.html';
                         }
@@ -241,8 +229,8 @@ function mostraTabela(atual, player) {
         });
 
         connection.on("InicioPartida", (retorno) => {
-            //window.sessionStorage.setItem("connection", JSON.stringify(connection));
-            location.href = "game.html?connectionId=" + connection.connectionId;
+            window.sessionStorage.setItem("connectionId", connection.connectionId);
+            location.href = "game.html";
         });
 
 $(function () {
