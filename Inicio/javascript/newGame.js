@@ -81,8 +81,24 @@ async function disconnected() {
     await connection.stop();
 }
 
-connection.on("adversarioDesistiu", (retorno) => { // fazer modal falando que jogador adiversario desistiu
-    alert(retorno);
+connection.on("adversarioDesistiu", (retorno) => { 
+    Swal.fire({
+        icon: 'info',
+        title: "Outro jogador abandonou a partida, você venceu!!!",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Jogar Novamente',
+        cancelButtonText: 'Voltar para o saguão',
+        reverseButtons: true
+        }).then((result) => {
+            window.sessionStorage.removeItem("connectionId");
+            if (result.isConfirmed) {
+                location.href='saguao.html?jogarNovamente=1';
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                location.href='saguao.html';
+            }
+        })
 });
 
 function testeObjetoSignalR() {
