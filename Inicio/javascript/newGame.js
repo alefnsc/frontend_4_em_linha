@@ -45,8 +45,10 @@ function jogarNovamente() {
 
 async function start() {
     try {
+        const idUsuario = window.sessionStorage.getItem("id");
+
         await connection.start();
-        connection.invoke('ConectarSala',connection.connectionId, nomeUsuario)
+        connection.invoke('ConectarSala',connection.connectionId, nomeUsuario, idUsuario)
         console.log("SignalR Connected.");
     } catch (err) {
         console.log(err);

@@ -12,6 +12,8 @@ function GetPartidas() {
                 const objects = JSON.parse(this.responseText);
                 document.getElementById('numeroPartidas').innerText = objects['numeroPartidas']
                 document.getElementById('numeroVitorias').innerText = objects['numeroVitorias']
+                document.getElementById('numeroDerrotas').innerText = objects['numeroDerrotas']
+                document.getElementById('numeroEmpates').innerText = objects['numeroEmpates']
                 document.getElementById('nomeUsuario').innerText = objects['nomeUsuario']
             }
         }
