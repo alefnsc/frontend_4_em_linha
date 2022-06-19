@@ -23,7 +23,7 @@
     <title>4 em linha</title>
 </head>
 
-<body style="margin: 0 auto;">
+<body style="margin: 0 auto;" onload="carregarTabuleiro()">
     <audio src="./wav/win.wav"></audio>
     <audio src="./wav/loss.wav"></audio>
     <nav style="margin-bottom: 60px; " class="navbar navbar-dark bg-mynav">
@@ -55,7 +55,7 @@
                     <div id="helper" style="display: block; margin: 0 auto; text-align: center;"></div>
                     <div id="screen" style="border: none; display: block; margin: 0 auto; text-align: center;"></div>
                     <div style="border: none; display: block; margin: 0 auto; text-align: center; padding-top: 10px;">
-                        <h3>Jogador 1 X Jogador 2</h3>
+                        <h3><span id="jogador1"></span> X <span id="jogador2"></span></h3>
                     </div>
                 </td>
 
