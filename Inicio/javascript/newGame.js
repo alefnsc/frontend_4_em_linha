@@ -24,7 +24,7 @@ function voltar() {
         allowOutsideClick: false 
       }).then((result) => {
         if (result.isConfirmed) {
-            disconnected();
+            disconnected("1");
             location.href='saguao.html';
         }
       })
@@ -80,44 +80,81 @@ connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
     console.log(dadosPatrocinador);
 });
 
-async function disconnected() {
-    await connection.invoke('DesconectarSala', connection.connectionId);
+async function disconnected(motivo) { // motivo 1 - desistiu; motivo 2 - timer zero; motivo 3 - cancelo looby
+    await connection.invoke('DesconectarSala', connection.connectionId, motivo);
     window.sessionStorage.removeItem("connectionId");
     await connection.stop();
 }
 
-connection.on("adversarioDesistiu", (retorno) => { 
-    starttimer('STOP', 0)
-    Swal.fire({
-        icon: 'info',
-        title: "Outro jogador abandonou a partida, você venceu!!!",
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Jogar Novamente',
-        cancelButtonText: 'Voltar para o saguão',
-        reverseButtons: true,
-        allowOutsideClick: false 
-        }).then((result) => {
-            window.sessionStorage.removeItem("connectionId");
-            if (result.isConfirmed) {
-                location.href='saguao.html?jogarNovamente=1';
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                location.href='saguao.html';
-            }
-        })
+connection.on("adversarioDesistiu", (motivo) => { 
+    if (motivo === "1") {
+        starttimer('STOP', 0)
+        Swal.fire({
+            icon: 'info',
+            title: "Outro jogador abandonou a partida, você venceu!!!",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Jogar Novamente',
+            cancelButtonText: 'Voltar para o saguão',
+            reverseButtons: true,
+            allowOutsideClick: false 
+            }).then((result) => {
+                window.sessionStorage.removeItem("connectionId");
+                if (result.isConfirmed) {
+                    location.href='saguao.html?jogarNovamente=1';
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    location.href='saguao.html';
+                }
+            })
+    }
+    else if (motivo === "2") {
+        starttimer('STOP', 0)
+        Swal.fire({
+            icon: 'info',
+            title: "Outro jogador não fez sua jogada a tempo, você venceu!!!",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Jogar Novamente',
+            cancelButtonText: 'Voltar para o saguão',
+            reverseButtons: true,
+            allowOutsideClick: false 
+            }).then((result) => {
+                window.sessionStorage.removeItem("connectionId");
+                if (result.isConfirmed) {
+                    location.href='saguao.html?jogarNovamente=1';
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    location.href='saguao.html';
+                }
+            })
+    }
 });
 
-function testeObjetoSignalR() {
-    const jogador = {
-        'IdJogador': '34',
-        'NickName': 'Fabiano'
-    };
+connection.on("avisoPerdeu", (motivo) => {
+    if (motivo === "2") {
+        starttimer('STOP', 0)
+        Swal.fire({
+            icon: 'info',
+            title: "Você perdeu, timer zerado.",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Jogar Novamente',
+            cancelButtonText: 'Voltar para o saguão',
+            reverseButtons: true,
+            allowOutsideClick: false 
+            }).then((result) => {
+                window.sessionStorage.removeItem("connectionId");
+                if (result.isConfirmed) {
+                    location.href='saguao.html?jogarNovamente=1';
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    location.href='saguao.html';
+                }
+            })
+    }
+});
 
-    // var str = JSON.stringify(objTest); // enviar string
-
-    connection.send('testObject', jogador);
-}
 
 function marcar(player, X) {
     // trazer array campos do back
@@ -202,7 +239,7 @@ function mostraTabela(atual, player) {
             campos = retorno
             vez = vezdequem
             mostraTabela(ultimo,player)
-            starttimer('START', player)
+            starttimer('START', vez)
 
             if (encerrada != 0 && encerrada != 3)
             {
@@ -262,89 +299,60 @@ function mostraTabela(atual, player) {
             location.href = "game.html";
         });
 
-// $(function () {
-//   var timerId = 0;
-//   var ctr=0;
-//   var max=10;
-
-//   timerId = setInterval(function () {
-//     // interval function
-//     ctr++;
-//     $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
-
-//     // max reached?
-//     if (ctr==max){
-//       clearInterval(timerId);
-//       ctr=0;
-//       $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
-
-//     }
-
-//   }, 1500);
-
-
-//   $('.btn-default').click(function () {
-//     clearInterval(timerId);
-//   });
-
-// });
-
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var disp;
+var sec = 0;
+var id = null;
 
-		var disp;
-		var sec = 0;
-		var id = null;
+var ctx = new AudioContext();
+var vol = ctx.createGain();
+vol.gain.value = 0.2;
+vol.connect(ctx.destination);
 
-		var ctx = new AudioContext();
-		var vol = ctx.createGain();
-		vol.gain.value = 0.2;
-		vol.connect(ctx.destination);
+function play(n) {
+    for (var i = 0; i < n; i++) {
+        var osc = ctx.createOscillator();
+        osc.type = 'square';
+        osc.frequency.value = 2000;
+        osc.connect(vol);
+        osc.start(ctx.currentTime + 0.00 + i * 0.1);
+        osc.stop( ctx.currentTime + 0.05 + i * 0.1);
+    }
+}
 
-		function play(n) {
-			for (var i = 0; i < n; i++) {
-				var osc = ctx.createOscillator();
-				osc.type = 'square';
-				osc.frequency.value = 2000;
-				osc.connect(vol);
-				osc.start(ctx.currentTime + 0.00 + i * 0.1);
-				osc.stop( ctx.currentTime + 0.05 + i * 0.1);
-			}
-		}
+function starttimer(acao, vezPlayer) {
+    play(2);
+    
+    disp = document.getElementById('disp');
 
-		function starttimer(acao, player) {
-			play(2);
-			
-			disp = document.getElementById('disp');
+    if (id) {
+        clearInterval(id);
+        id = null;
+    }
 
-			if (id) {
-				clearInterval(id);
-				id = null;
-			}
+    if (acao === 'STOP') {
+        acao = 'START';
+        play(1);
+        return;
+    }
 
-			if (acao === 'STOP') {
-				acao = 'START';
-				play(1);
-				return;
-			}
-
-			acao = 'STOP';
-			play(2);
-			sec = 0;
-			disp.innerText = 15 - sec;
-			id = setInterval(
-				function() {
-					sec++;
-					disp.innerHTML = 15 - sec;
-					if (sec === 15) {
-						sec = -1;
-						play(2);
-					}
-                    if (sec === 0 && player != 0) {
-                        var vezPlayer = player == 1 ? 2 : 1;
-                            if (vezPlayer == player) {
-                            disconnected()
-                        }
+    acao = 'STOP';
+    play(2);
+    sec = 0;
+    disp.innerText = 15 - sec;
+    id = setInterval(
+        function() {
+            sec++;
+            disp.innerHTML = 15 - sec;
+            if (sec === 15) {
+                sec = -1;
+                play(2);
+                if (vezPlayer != "0") {
+                    if (vezPlayer != connection.connectionId) {
+                        clearInterval(id);
+                        disconnected("2");
                     }
-				}, 1000);
+                }
             }
-
+        }, 1000);
+}
