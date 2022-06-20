@@ -6,12 +6,13 @@ const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
 
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").withAutomaticReconnect().build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").withAutomaticReconnect().build();
 var campos = []
 var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
 
 function voltar() {
+    starttimer('STOP', 0)
     Swal.fire({
         title: 'Tem certeza?',
         text: "A partida será contabilizada como derrota!",
@@ -19,7 +20,8 @@ function voltar() {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Sair'
+        confirmButtonText: 'Sair',
+        allowOutsideClick: false 
       }).then((result) => {
         if (result.isConfirmed) {
             disconnected();
@@ -85,6 +87,7 @@ async function disconnected() {
 }
 
 connection.on("adversarioDesistiu", (retorno) => { 
+    starttimer('STOP', 0)
     Swal.fire({
         icon: 'info',
         title: "Outro jogador abandonou a partida, você venceu!!!",
@@ -93,7 +96,8 @@ connection.on("adversarioDesistiu", (retorno) => {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Jogar Novamente',
         cancelButtonText: 'Voltar para o saguão',
-        reverseButtons: true
+        reverseButtons: true,
+        allowOutsideClick: false 
         }).then((result) => {
             window.sessionStorage.removeItem("connectionId");
             if (result.isConfirmed) {
@@ -117,6 +121,7 @@ function testeObjetoSignalR() {
 
 function marcar(player, X) {
     // trazer array campos do back
+    starttimer('STOP', 0)
     if(vez == connection.connectionId){
         console.log('test')
         Swal.fire({
@@ -197,9 +202,11 @@ function mostraTabela(atual, player) {
             campos = retorno
             vez = vezdequem
             mostraTabela(ultimo,player)
+            starttimer('START', player)
 
             if (encerrada != 0 && encerrada != 3)
             {
+                starttimer('STOP', 0)
                 Swal.fire({
                     icon: 'info',
                     title: "Jogador " + document.getElementById("jogador" + player).innerText + " venceu!!!",
@@ -208,7 +215,8 @@ function mostraTabela(atual, player) {
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Jogar Novamente',
                     cancelButtonText: 'Voltar para o saguão',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    allowOutsideClick: false 
                     }).then((result) => {
                         window.sessionStorage.removeItem("connectionId");
                         if (result.isConfirmed) {
@@ -221,6 +229,7 @@ function mostraTabela(atual, player) {
 
             if (encerrada == 3)
             {
+                starttimer('STOP', 0)
                 Swal.fire({
                     icon: 'info',
                     title: "Empate",
@@ -229,7 +238,8 @@ function mostraTabela(atual, player) {
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Jogar Novamente',
                     cancelButtonText: 'Voltar para o saguão',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    allowOutsideClick: false 
                     }).then((result) => {
                         window.sessionStorage.removeItem("connectionId");
                         if (result.isConfirmed) {
@@ -252,30 +262,89 @@ function mostraTabela(atual, player) {
             location.href = "game.html";
         });
 
-$(function () {
-  var timerId = 0;
-  var ctr=0;
-  var max=10;
+// $(function () {
+//   var timerId = 0;
+//   var ctr=0;
+//   var max=10;
 
-  timerId = setInterval(function () {
-    // interval function
-    ctr++;
-    $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
+//   timerId = setInterval(function () {
+//     // interval function
+//     ctr++;
+//     $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
 
-    // max reached?
-    if (ctr==max){
-      clearInterval(timerId);
-      ctr=0;
-      $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
+//     // max reached?
+//     if (ctr==max){
+//       clearInterval(timerId);
+//       ctr=0;
+//       $('#blips > .progress-bar').attr("style","width:" + ctr*max + "%");
 
-    }
+//     }
 
-  }, 1500);
+//   }, 1500);
 
 
-  $('.btn-default').click(function () {
-    clearInterval(timerId);
-  });
+//   $('.btn-default').click(function () {
+//     clearInterval(timerId);
+//   });
 
-});
+// });
+
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+		var disp;
+		var sec = 0;
+		var id = null;
+
+		var ctx = new AudioContext();
+		var vol = ctx.createGain();
+		vol.gain.value = 0.2;
+		vol.connect(ctx.destination);
+
+		function play(n) {
+			for (var i = 0; i < n; i++) {
+				var osc = ctx.createOscillator();
+				osc.type = 'square';
+				osc.frequency.value = 2000;
+				osc.connect(vol);
+				osc.start(ctx.currentTime + 0.00 + i * 0.1);
+				osc.stop( ctx.currentTime + 0.05 + i * 0.1);
+			}
+		}
+
+		function starttimer(acao, player) {
+			play(2);
+			
+			disp = document.getElementById('disp');
+
+			if (id) {
+				clearInterval(id);
+				id = null;
+			}
+
+			if (acao === 'STOP') {
+				acao = 'START';
+				play(1);
+				return;
+			}
+
+			acao = 'STOP';
+			play(2);
+			sec = 0;
+			disp.innerText = 15 - sec;
+			id = setInterval(
+				function() {
+					sec++;
+					disp.innerHTML = 15 - sec;
+					if (sec === 15) {
+						sec = -1;
+						play(2);
+					}
+                    if (sec === 0 && player != 0) {
+                        var vezPlayer = player == 1 ? 2 : 1;
+                            if (vezPlayer == player) {
+                            disconnected()
+                        }
+                    }
+				}, 1000);
+            }
 
