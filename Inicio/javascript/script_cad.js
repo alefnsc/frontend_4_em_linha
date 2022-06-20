@@ -40,7 +40,7 @@ function sair() {
       }).then((result) => {
         if (result.isConfirmed) {
             window.sessionStorage.clear();
-            location.href='index.html';
+            location.href='../index.html';
         }
       })
 }
