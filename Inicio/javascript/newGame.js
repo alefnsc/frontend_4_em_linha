@@ -78,6 +78,13 @@ connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
     console.log(jogador1);
     console.log(jogador2);
     console.log(dadosPatrocinador);
+
+    document.getElementsByClassName("tabelaPrincipal")[0].style.backgroundImage  = `url(${dadosPatrocinador.tabuleiro})`;
+    document.getElementsByClassName("red")[0].style.backgroundImage  = `url(${dadosPatrocinador.ficha1})`;
+    document.getElementsByClassName("playerAction1:hover")[0].style.backgroundImage  = `url(${dadosPatrocinador.ficha1})`;
+    document.getElementsByClassName("blue")[0].style.backgroundImage  = `url(${dadosPatrocinador.ficha2})`;
+    document.getElementsByClassName("playerAction2:hover")[0].style.backgroundImage  = `url(${dadosPatrocinador.ficha2})`;
+    document.getElementById("img_patrocinador").style.backgroundImage = `url(${dadosPatrocinador.banner})`;
 });
 
 async function disconnected() {
