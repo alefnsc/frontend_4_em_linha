@@ -5,6 +5,7 @@ const tabJog = document.getElementById('vezJogador')
 const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
+const imgTabuleiro = '';
 
 const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").withAutomaticReconnect().build();
 var campos = []
@@ -73,10 +74,11 @@ async function carregarTabuleiro() {
 connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
     document.getElementById("jogador1").innerText = jogador1['nickName'];
     document.getElementById("jogador2").innerText = jogador2['nickName'];
-    console.log(jogador1);
-    console.log(jogador2);
-    console.log(dadosPatrocinador);
+    imgTabuleiro = dadosPatrocinador.tabuleiro;
+    console.log(dadosPatrocinador)
+    document.getElementById('tabJogo').setAttribute('background', imgTabuleiro);
 });
+
 
 async function disconnected() {
     await connection.invoke('DesconectarSala', connection.connectionId);
@@ -166,7 +168,7 @@ function mostraTabela(atual, player) {
    helper += "</tr></table></center>"
    tabHelper.innerHTML = helper
    //trazer array campos back
-   var html = "<center><table class='tabelaPrincipal' style='border: none;'>"
+   var html = "<center><table id='tabJogo' class='tabelaPrincipal' style='border: none;'>"
    for (let i = 0; i < tabuleiro / largura; i++) {
        html += "<tr>"
        for (let j = 0; j < tabuleiro / altura; j++) {
