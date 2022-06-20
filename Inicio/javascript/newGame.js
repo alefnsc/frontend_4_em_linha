@@ -6,7 +6,7 @@ const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
 
-const connection = new signalR.HubConnectionBuilder().withUrl("https://four-line.herokuapp.com/jogo").withAutomaticReconnect().build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").withAutomaticReconnect().build();
 var campos = []
 var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
@@ -38,6 +38,7 @@ jogarNovamente();
 function jogarNovamente() {
     const urlParams = new URLSearchParams(window.location.search);
     const jogar = urlParams.get('jogarNovamente');
+    urlParams.delete('jogarNovamente');
     if (jogar == 1) {
         document.getElementById("botaoJogar").click();
     }

@@ -1,6 +1,6 @@
 function loadTable() {
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://four-line.herokuapp.com/api/Tema/");
+  xhttp.open("GET", "https://localhost:5001/api/Tema/");
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -26,7 +26,7 @@ loadTable();
 function buscarNomePatrocinador(id) {
   //console.log(id);
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://four-line.herokuapp.com/api/Patrocinador/" + id);
+  xhttp.open("GET", "https://localhost:5001/api/Patrocinador/" + id);
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -62,7 +62,7 @@ function showUserCreateBox() {
     focusConfirm: false,
     didOpen: () => {
       const xhttp = new XMLHttpRequest();
-      xhttp.open("GET", "https://four-line.herokuapp.com/api/Patrocinador/");
+      xhttp.open("GET", "https://localhost:5001/api/Patrocinador/");
       xhttp.send();
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -150,7 +150,7 @@ function userCreate(url_imagem, nomeImagem, idPatrocinador) {
   }));
 
   const xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "https://four-line.herokuapp.com/api/Tema");
+  xhttp.open("POST", "https://localhost:5001/api/Tema");
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
   xhttp.send(JSON.stringify({
@@ -187,7 +187,7 @@ function userDelete(id) {
   }).then((result) => {
     if (result.isConfirmed) {
       const xhttp = new XMLHttpRequest();
-      xhttp.open("DELETE", "https://four-line.herokuapp.com/api/Tema/" + id);
+      xhttp.open("DELETE", "https://localhost:5001/api/Tema/" + id);
       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhttp.send(JSON.stringify({
         "id": id
@@ -223,7 +223,7 @@ function userDelete(id) {
 function showUserEditBox(id) {
   console.log(id);
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://four-line.herokuapp.com/api/Tema/" + id);
+  xhttp.open("GET", "https://localhost:5001/api/Tema/" + id);
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -254,7 +254,7 @@ function showUserEditBox(id) {
         focusConfirm: false,
         didOpen: () => {
           const xhttp = new XMLHttpRequest();
-          xhttp.open("GET", "https://four-line.herokuapp.com/api/Patrocinador/"); //url get Patrocinadores
+          xhttp.open("GET", "https://localhost:5001/api/Patrocinador/"); //url get Patrocinadores
           xhttp.send();
           xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -288,7 +288,7 @@ function userEdit(url_imagem) {
   const idPatrocinador = document.getElementById("patrocinadores").value;
 
   const xhttp = new XMLHttpRequest();
-  xhttp.open("PUT", "https://four-line.herokuapp.com/api/Tema/");
+  xhttp.open("PUT", "https://localhost:5001/api/Tema/");
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify({
     "id": id, "nome": Nome, "urlTabuleiro": UrlTabuleiro, "idPatrocinador": idPatrocinador
