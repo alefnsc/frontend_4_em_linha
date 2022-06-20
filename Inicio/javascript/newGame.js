@@ -11,6 +11,8 @@ var campos = []
 var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
 
+const dadosPatrocinadorImagens = null
+
 function voltar() {
     starttimer('STOP', 0)
     Swal.fire({
@@ -70,6 +72,8 @@ async function carregarTabuleiro() {
 
     await connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0);
     await connection.invoke('SolicitarDadosPartida', connection.connectionId);
+
+    atualizaImagens();
 }
 
 connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
@@ -79,13 +83,38 @@ connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
     console.log(jogador2);
     console.log(dadosPatrocinador);
 
-    document.getElementsByClassName("tabelaPrincipal")[0].style.backgroundImage  = `url(${dadosPatrocinador.tabuleiro})`;
-    document.getElementsByClassName("red")[0].style.backgroundImage  = `url(${dadosPatrocinador.ficha1})`;
-    document.getElementsByClassName("playerAction1:hover")[0].style.backgroundImage  = `url(${dadosPatrocinador.ficha1})`;
-    document.getElementsByClassName("blue")[0].style.backgroundImage  = `url(${dadosPatrocinador.ficha2})`;
-    document.getElementsByClassName("playerAction2:hover")[0].style.backgroundImage  = `url(${dadosPatrocinador.ficha2})`;
-    document.getElementById("img_patrocinador").style.backgroundImage = `url(${dadosPatrocinador.banner})`;
+    dadosPatrocinadorImagens = dadosPatrocinador;
 });
+
+function atualizaImagens() {
+    listaTabela = document.getElementsByClassName("tabelaPrincipal");
+    imagemTabela = dadosPatrocinadorImagens.tabuleiro;
+    changeBackground(listaTabela, imagemTabela);
+
+    listaPecaRed = document.getElementsByClassName("red");
+    imagemPecaRed = dadosPatrocinadorImagens.ficha1;
+    changeBackground(listaPecaRed, imagemPecaRed);
+    listaPecaRedHover = document.getElementsByClassName("playerAction1:hover");
+    imagemPecaRedHover = dadosPatrocinadorImagens.ficha1;
+    changeBackground(listaPecaRedHover, imagemPecaRedHover);
+
+    listaPecaBlue = document.getElementsByClassName("blue");
+    imagemPecaBlue = dadosPatrocinadorImagens.ficha2;
+    changeBackground(imagemPecaBlue, imagemPecaBlue);
+    listaPecaBlueHover = document.getElementsByClassName("playerAction2:hover");
+    imagemPecaBlueHover = dadosPatrocinadorImagens.ficha2;
+    changeBackground(listaPecaBlueHover, imagemPecaBlueHover);
+
+    document.getElementById("img_patrocinador").style.backgroundImage = `url(${dadosPatrocinadorImagens.banner})`;
+}
+
+function changeBackground(lista, imagem){
+
+    for(var i=0, len=lista.length; i<len; i++)
+    {
+        lista[i].style["background-image"] = `url(${imagem})`;
+    }
+}
 
 async function disconnected() {
     await connection.invoke('DesconectarSala', connection.connectionId);
