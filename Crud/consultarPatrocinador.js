@@ -32,33 +32,35 @@ function showUserCreateBox() {
       html:
         '<input id="Id" type="hidden">' +
         '<br><br><label >Nome:'+ '</label><br> ' +
-        '<input required type="text" id="Nome" class="swal2-input" placeholder="Nome">' +
+        '<input required type="text" id="createNome" class="swal2-input" placeholder="Nome">' +
         '<br><br><label >Email:'+ '</label><br> ' +
-        '<input required type="email" id="Email" class="swal2-input" placeholder="exemplo@mail.com">' +
+        '<input required type="email" id="createEmail" class="swal2-input" placeholder="exemplo@mail.com">' +
         '<br><br><label >URL Logo:'+ '</label><br> ' +
-        '<input required type="file" id="UrlLogo" class="swal2-input" placeholder="http://exemplo.com.br/img.png">' +
+        '<input required type="file" id="createLogo" class="swal2-input" placeholder="http://exemplo.com.br/img.png">' +
         '<br><br><label >URL Website:'+ '</label><br> ' +
-        '<input required type="url" id="Website" class="swal2-input" placeholder="http://exemplo.com.br">' +
+        '<input required type="url" id="createWebsite" class="swal2-input" placeholder="http://exemplo.com.br">' +
         '<br><br><label >Celular:'+ '</label><br> ' +
-        '<input required type="tel" id="Celular" maxlength="17" class="swal2-input js-field-personal_phone" placeholder="(11) 99999-9999">' ,
+        '<input required type="tel" id="createCel" maxlength="17" class="swal2-input js-field-personal_phone" placeholder="(11) 99999-9999">' ,
       focusConfirm: false,
       preConfirm: () => {
-        NomePat = document.getElementById('Nome').value;
-        Email = document.getElementById('Email').value;
-        UrlLogo = document.getElementById('UrlLogo').value;
-        Website = document.getElementById('Website').value;
-        Celular = document.getElementById('Celular').value;
- 
+        NomePat = document.getElementById('createNome').value;
+        Email = document.getElementById('createEmail').value;
+        UrlLogo = document.getElementById("createLogo").files[0];
+        Website = document.getElementById('createWebsite').value;
+        Celular = document.getElementById('createCel').value;
+
        if( !NomePat || !Email || !UrlLogo  || !Website || !Celular ) {
         Swal.fire('Preencha todos os campos!');
        }
        else {
-           salvarImagemFirebase();
+
+        salvarImagemFirebase(UrlLogo, NomePat, Email, Website, Celular, 0);
        }
       }
     })
-} 
-async function salvarImagemFirebase(){
+}
+
+/*async function trazerImagemFirebase(url){
   const firebaseConfig = {
     apiKey: "AIzaSyCKU6lw0J2J8_pUyEBgSPrT4l2yptnBPZQ",
     authDomain: "forline-4ef2b.firebaseapp.com",
@@ -69,27 +71,51 @@ async function salvarImagemFirebase(){
     measurementId: "G-BQV4FC6PW1"
   };
   firebase.initializeApp(firebaseConfig);
+  console.log(url);
+
+  //substring url da imagem a partir da ?
+var urlImgJson = url.substring(0,url.indexOf('?'));
+console.log(urlImgJson);
+  //trazer o name do json da imagem
+
+var xhr = new XMLHttpRequest();
+xhr.onload = (event) => {
+  var blob = xhr.response;
+};
+xhr.open('GET', urlImgJson);
+xhr.send();
+
+
+
+}*/
+
+async function salvarImagemFirebase(url, nomeImagem, Email, Website, Celular, atualizacao){
+  const firebaseConfig = {
+    apiKey: "AIzaSyCKU6lw0J2J8_pUyEBgSPrT4l2yptnBPZQ",
+    authDomain: "forline-4ef2b.firebaseapp.com",
+    projectId: "forline-4ef2b",
+    storageBucket: "forline-4ef2b.appspot.com",
+    messagingSenderId: "475759422512",
+    appId: "1:475759422512:web:ca8405d44016448cf0d1f5",
+    measurementId: "G-BQV4FC6PW1"
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+ }else {
+    firebase.app();
+ }
 
   let storage = firebase.storage();
 
-
-  var file = document.querySelector("#UrlLogo").files[0];
+  var file = url;
 
   /* var date = new Date();x
 
-  var name = date.getDate() + '_' + date.getMonth + '_' + date.getFullYear + '-' + nomeImagem;*/
+  var name = date.getDate() + '' + date.getMonth + '' + date.getFullYear + '-' + nomeImagem;*/
 
   var date = new Date().toLocaleDateString();
-  console.log(date);
   var date = date.replace(/\//g, "_");
-  console.log(date);
-
-
-  var nomeImagem = document.getElementById("Nome").value;
-  var Em = document.getElementById('Email').value;
-  var Web = document.getElementById('Website').value;
-  var Cel = document.getElementById('Celular').value;
-
   var nomeImagemF =  nomeImagem + '_' + date;
 
   const metadata = {
@@ -102,25 +128,28 @@ async function salvarImagemFirebase(){
 
   upload.on("state_changed", function () {
     upload.snapshot.ref.getDownloadURL().then(function (url_imagem) {
-      userCreate(url_imagem, Em, Web, Cel, nomeImagem);
+      if (atualizacao == 0) {
+        userCreate(url_imagem, Email, Website, Celular, nomeImagem);
+        
+
+      }
+      else {
+        userEdit(url_imagem, nomeImagem,  Email, Website, Celular, atualizacao);
+      }
     })
   }
   )
 }
+
 function userCreate(url_imagem, email, web, celular, nome) {
-    const Nome = nome;
-    const Email = email;
-    const UrlLogo = url_imagem;
-    const Website = web;
-    const Celular = celular;
+
 
    //alert()
-    
     const xhttp = new XMLHttpRequest();
     xhttp.open("POST", "https://localhost:5001/api/Patrocinador/");
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(JSON.stringify({ 
-      "nome": Nome, "email": Email,"urlLogo": UrlLogo, "website": Website, "celular": Celular
+    xhttp.send(JSON.stringify({
+      "nome": nome, "website": web,  "email": email, "celular": celular, "urlLogo": url_imagem
     }));
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 201) {
@@ -134,7 +163,6 @@ function userCreate(url_imagem, email, web, celular, nome) {
         Swal.fire(objects['message']);
         loadTable();
       }
-      
     };
 }
 
@@ -148,7 +176,6 @@ function userDelete(id) {
     },
     buttonsStyling: false
   })
-  
   swalWithBootstrapButtons.fire({
     title: 'Tem certeza?',
     text: "Você não poderá reverter essa mudança",
@@ -211,39 +238,47 @@ function showUserEditBox(id) {
           '<input id="id" type="hidden" value='+user['id']+'>' +
           '<input style="display: block; margin: 0 auto; padding: 20px" type="image" width="200" height="auto" src="'+user['urlLogo']+'">' +
           '<br><br><label >Nome:'+ '</label><br> ' +
-          '<input id="nome" class="swal2-input" placeholder="Nome" value="'+user['nome']+'">' +
+          '<input id="editNome" class="swal2-input" placeholder="Nome" value="'+user['nome']+'">' +
           '<br><br><label >Email:'+ '</label><br> ' +
-          '<input id="email" class="swal2-input" placeholder="Email" value="'+user['email']+'">' +
+          '<input id="editEmail" class="swal2-input" placeholder="Email" value="'+user['email']+'">' +
           '<br><br><label >Celular:'+ '</label><br> ' +
-          '<input id="celular" class="swal2-input" placeholder="Celular" value="'+user['celular']+'">' +
+          '<input id="editCel" class="swal2-input" placeholder="Celular" value="'+user['celular']+'">' +
           '<br><br><label >URL Website:'+ '</label><br> ' +
-          '<input id="website" class="swal2-input" placeholder="Website" value="'+user['website']+'">' +
+          '<input id="editWebsite" class="swal2-input" placeholder="Website" value="'+user['website']+'">' +
           '<br><br><label >URL Logo:'+ '</label><br> ' +
-          '<input id="urlLogo" required type="file" class="swal2-input" placeholder="UrlLogo" value="'+user['urlLogo']+'">',
+          '<input id="editLogo" required type="file" class="swal2-input">',
         focusConfirm: false,
         preConfirm: () => {
-          userEdit(url_imagem);
-          salvarImagemFirebase();
+          var urlEdit = document.getElementById("editLogo").files[0];
+          var NomePat = document.getElementById('editNome').value;
+          var Email = document.getElementById('editEmail').value;
+          var Website = document.getElementById('editWebsite').value;
+          var Celular = document.getElementById('editCel').value;
+          if( !NomePat || !Email  || !Website || !Celular ) {
+            Swal.fire('Preencha todos os campos!');
+           }
+           else {
+            if (!urlEdit){
+              userEdit(user['urlLogo'], NomePat, Website, Email, Celular, user['id']);
+            }
+            else{
+            salvarImagemFirebase(urlEdit, NomePat, Email, Website, Celular, user['id']);
+          }
+           }
         }
       })
     }
   };
 }
 
-function userEdit(url_imagem) {
-  const id = document.getElementById("id").value;
-  const nome = document.getElementById("nome").value;
-  const website = document.getElementById("website").value;
-  const email = document.getElementById("email").value;
-  const celular = document.getElementById("celular").value;
+function userEdit(url_imagem, nome, website, email, celular, idPat) {
+
   const urlLogo = url_imagem;
-    
   const xhttp = new XMLHttpRequest();
   xhttp.open("PUT", "https://localhost:5001/api/Patrocinador/");
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  xhttp.send(JSON.stringify({ 
-    "id": id, "nome": nome, "website": website, "email": email, "celular": celular, 
-    "urlLogo": urlLogo
+  xhttp.send(JSON.stringify({
+    "id": idPat, "nome": nome, "website": website, "email": email, "celular": celular, "urlLogo": urlLogo
   }));
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {

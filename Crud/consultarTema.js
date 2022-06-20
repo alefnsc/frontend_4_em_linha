@@ -4,7 +4,6 @@ function loadTable() {
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      //console.log(this.responseText);
       var trHTML = '';
       const objects = JSON.parse(this.responseText);
       for (let object of objects) {
@@ -31,15 +30,10 @@ function buscarNomePatrocinador(id) {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       const objects = JSON.parse(this.responseText);
-
-      /*var teste = objects['nome'];
-      console.log(teste);*/
-
-      return teste;
+      return objects['nome'];
     }
   };
 }
-
 
 function showUserCreateBox() {
   Swal.fire({
@@ -80,21 +74,21 @@ function showUserCreateBox() {
     },
     preConfirm: () => {
       Nome = document.getElementById('Nome').value;
-      UrlTabuleiro = document.getElementById('UrlTabuleiro').value;
+      image = document.querySelector("#UrlTabuleiro").files[0];
       idPatrocinador = document.getElementById('idPatrocinador').value;
 
       if (!Nome || !UrlTabuleiro || !idPatrocinador) {
         Swal.fire('Preencha todos os campos!');
       }
       else {
-        salvarImagemFirebase(idPatrocinador);
+        salvarImagemFirebase(Nome, image, idPatrocinador, 0);
 
       }
     }
   })
 }
 
-async function salvarImagemFirebase(idPatrocinador) {
+async function salvarImagemFirebase(nomeImagem, url, idPat, atualizacao) {
   const firebaseConfig = {
     apiKey: "AIzaSyCKU6lw0J2J8_pUyEBgSPrT4l2yptnBPZQ",
     authDomain: "forline-4ef2b.firebaseapp.com",
@@ -104,11 +98,15 @@ async function salvarImagemFirebase(idPatrocinador) {
     appId: "1:475759422512:web:ca8405d44016448cf0d1f5",
     measurementId: "G-BQV4FC6PW1"
   };
-  firebase.initializeApp(firebaseConfig);
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+ }else {
+    firebase.app();
+ }
 
   var storage = firebase.storage();
 
-  var file = document.querySelector("#UrlTabuleiro").files[0];
+  var file = url
 
   /* var date = new Date();x
 
@@ -116,9 +114,6 @@ async function salvarImagemFirebase(idPatrocinador) {
 
   var date = new Date().toLocaleDateString();
   var date = date.replace(/\//g, "_");
-
-
-  var nomeImagem = document.getElementById("Nome").value;
 
   var nomeImagemF =  nomeImagem + '_' + date;
 
@@ -132,8 +127,13 @@ async function salvarImagemFirebase(idPatrocinador) {
 
   upload.on("state_changed", function () {
     upload.snapshot.ref.getDownloadURL().then(function (url_imagem) {
-      console.log('1')
-      userCreate(url_imagem, nomeImagem, idPatrocinador);
+      
+      if (atualizacao == 0) {
+        userCreate(url_imagem, nomeImagem, idPat);
+      }
+      else {
+        userEdit(url_imagem, nomeImagem, idPat, atualizacao);
+      }
     })
   }
   )
@@ -240,17 +240,12 @@ function showUserEditBox(id) {
           '<input id="id" type="hidden" value="' + user['id'] + '">' +
           '<input style="display: block; margin: 0 auto; padding: 20px" type="image" width="200" height="auto" src="' + user['urlTabuleiro'] + '">' +
           '<br><br><label >Nome:' + '</label><br> ' +
-          '<input id="Nome" class="swal2-input" placeholder="First" value="' + user['nome'] + '">' +
+          '<input id="nameEdit" class="swal2-input" placeholder="First" value="' + user['nome'] + '">' +
           '<br><br><label >URL Tabuleiro:' + '</label><br> ' +
-          '<input id="UrlTabuleiro" required type="file" class="swal2-input" placeholder="Last" value="' + user['urlTabuleiro'] + '">' +
+          '<input id="urlEdit" required type="file" class="swal2-input" placeholder="Last" value="' + user['urlTabuleiro'] + '">' +
           '<br><br><label >Patrocinador:' + '</label><br> ' +
-          '<select id="patrocinadores" class="swal2-input" type="text" data-use-type="STRING">' +
-          '<option disabled value="' +
-          objects['idPatrocinador'] +
-          '" selected>' +
-          objects['nomePatrocinador'] +
-          '</option>' +
-          '</select>',
+          '<select id="patEdit" class="swal2-input" type="text" data-use-type="STRING">' +
+          '<option disabled value="' + objects['idPatrocinador'] +'" selected>' + objects['nomePatrocinador'] +'</option>' +'</select>',
         focusConfirm: false,
         didOpen: () => {
           const xhttp = new XMLHttpRequest();
@@ -265,7 +260,7 @@ function showUserEditBox(id) {
               for (let object of objects) {
                 if (object['id'] != idPatrocina) {
                   const option = new Option(object['nome'], object['id']);
-                  const element = document.querySelector("#patrocinadores");
+                  const element = document.querySelector("#patEdit");
                   element.add(option, undefined)
                 }
               }
@@ -273,25 +268,35 @@ function showUserEditBox(id) {
           };
         },
         preConfirm: () => {
-          userEdit(url_imagem);
-          salvarImagemFirebase();
+          var urlEdit = document.getElementById("urlEdit").files[0];
+          var NomeTema = document.getElementById('nameEdit').value;
+          var idPat = document.getElementById('patEdit').value;
+          if( !NomeTema || !idPat) {
+            Swal.fire('Preencha todos os campos!');
+           }
+           else {
+            if (!urlEdit){
+              userEdit(user['urlTabuleiro'], NomeTema, idPat, user['id']);
+            }
+            else{
+            salvarImagemFirebase(NomeTema, urlEdit, idPat, user['id']);
+          }
+           }
+
         }
       })
     }
   };
 }
 
-function userEdit(url_imagem) {
-  const id = document.getElementById("id").value;
-  const Nome = document.getElementById("Nome").value;
-  const UrlTabuleiro = url_imagem;
-  const idPatrocinador = document.getElementById("patrocinadores").value;
+function userEdit(url_imagem, nome, idpat, idtema) {
+
 
   const xhttp = new XMLHttpRequest();
   xhttp.open("PUT", "https://localhost:5001/api/Tema/");
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify({
-    "id": id, "nome": Nome, "urlTabuleiro": UrlTabuleiro, "idPatrocinador": idPatrocinador
+    "id": idtema, "nome": nome, "urlTabuleiro": url_imagem, "idPatrocinador": idpat
   }));
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {

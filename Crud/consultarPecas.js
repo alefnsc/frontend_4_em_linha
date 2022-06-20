@@ -74,21 +74,20 @@ function showUserCreateBox() {
     preConfirm: () => {
 
         Nome = document.getElementById('name').value;
-        image = document.getElementById('image').value;
+        image = document.querySelector("#image").files[0];
         theme = document.getElementById('theme').value;
  
        if( !Nome || !image || !theme) {
         Swal.fire('Preencha todos os campos!');
        }
        else {
-        salvarImagemFirebase(theme);
-
+        salvarImagemFirebase(Nome, image, theme, 0);
         }
     }
   })
 }
 
-async function salvarImagemFirebase(idTema) {
+async function salvarImagemFirebase(nomeImagem, url, tema, atualizacao) {
   const firebaseConfig = {
     apiKey: "AIzaSyCKU6lw0J2J8_pUyEBgSPrT4l2yptnBPZQ",
     authDomain: "forline-4ef2b.firebaseapp.com",
@@ -98,23 +97,23 @@ async function salvarImagemFirebase(idTema) {
     appId: "1:475759422512:web:ca8405d44016448cf0d1f5",
     measurementId: "G-BQV4FC6PW1"
   };
-  firebase.initializeApp(firebaseConfig);
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+ }else {
+    firebase.app();
+ }
 
   var storage = firebase.storage();
 
-  var file = document.querySelector("#image").files[0];
+  var file = url
 
   /* var date = new Date();x
 
   var name = date.getDate() + '_' + date.getMonth + '_' + date.getFullYear + '-' + nomeImagem;*/
 
   var date = new Date().toLocaleDateString();
-  console.log(date);
   var date = date.replace(/\//g, "_");
-  console.log(date);
-
-
-  var nomeImagem = document.getElementById("name").value;
 
   var nomeImagemF =  nomeImagem + '_' + date;
 
@@ -128,22 +127,27 @@ async function salvarImagemFirebase(idTema) {
 
   upload.on("state_changed", function () {
     upload.snapshot.ref.getDownloadURL().then(function (url_imagem) {
-      userCreate(url_imagem, nomeImagem, idTema);
+
+      if (atualizacao == 0) {
+        userCreate(url_imagem, nomeImagem, tema);
+      }
+      else {
+        userEdit(url_imagem, nomeImagem, tema, atualizacao);
+      }
+
+      
     })
   }
   )
 }
 
-function userCreate(url_imagem, img, idTema) {
-  const name = img;
-  const image = url_imagem;
-  const Tema = idTema;
+function userCreate(url_imagem, nomeimg, idTema) {
 
   const xhttp = new XMLHttpRequest();
   xhttp.open("POST", "https://localhost:5001/api/Ficha/");  //url de post ficha
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify({
-    "nome": name, "urlFicha": image, "idTema": Tema
+    "nome": nomeimg, "urlFicha": url_imagem, "idTema": idTema
   }));
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4) {
@@ -228,17 +232,12 @@ function showUserEditBox(id) {
           '<input id="id" type="hidden" value="'+peca['id']+'">' +
           '<input style="display: block; margin: 0 auto; padding: 20px" type="image" width="200" height="auto" src="'+peca['urlFicha']+'">' +
           '<br><br><label >Nome:'+ '</label><br> ' +
-          '<input id="name" class="swal2-input" placeholder="Nome" value="' + peca['nome'] + '">' +
+          '<input id="nameEdit" class="swal2-input" placeholder="Nome" value="' + peca['nome'] + '">' +
           '<br><br><label >URL Ficha:'+ '</label><br> ' +
-          '<input id="image" required type="file"  class="swal2-input" placeholder="UrlImagem" value="' + peca['urlFicha'] + '">' +
+          '<input id="urlEdit" required type="file"  class="swal2-input" placeholder="UrlImagem" value="' + peca['urlFicha'] + '">' +
           '<br><br><label >Tema:'+ '</label><br> ' +
-          '<select id="theme" class="swal2-input" type="text" data-use-type="STRING">' +
-          '<option value="' +
-          peca['idTema'] + 
-          '" selected>'+
-          peca['nomeTema'] +
-          '</option>' +
-          '</select>',
+          '<select id="themeEdit" class="swal2-input" type="text" data-use-type="STRING">' +
+          '<option value="' + peca['idTema'] + '" selected>'+ peca['nomeTema'] +'</option>' +'</select>',
         focusConfirm: false,
         didOpen: () => {
           const xhttp = new XMLHttpRequest();
@@ -261,25 +260,34 @@ function showUserEditBox(id) {
           };
         },
         preConfirm: () => {
-          userEdit(url_imagem);
-          salvarImagemFirebase();
+          var urlEdit = document.getElementById("urlEdit").files[0];
+          var NomeFicha = document.getElementById('nameEdit').value;
+          var Tema = document.getElementById('themeEdit').value;
+          if( !NomeFicha || !Tema) {
+            Swal.fire('Preencha todos os campos!');
+           }
+           else {
+            if (!urlEdit){
+              userEdit(peca['urlFicha'], NomeFicha, Tema, peca['id']);
+            }
+            else{
+            salvarImagemFirebase(NomeFicha, urlEdit, Tema, peca['id']);
+          }
+           }
         }
       })
     }
   };
 }
 
-function userEdit(url_imagem) {
-  const id = document.getElementById("id").value;
-  const nome = document.getElementById("name").value;
-  const image = url_imagem;
-  const theme = document.getElementById("theme").value;
+function userEdit(url_imagem, NomeFicha, Tema, idFicha) {
+
 
   const xhttp = new XMLHttpRequest();
   xhttp.open("PUT", "https://localhost:5001/api/Ficha/");    //url de update fichas
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify({
-    "id": id, "nome": nome, "urlFicha": image, "idTema": theme
+    "id": idFicha, "nome": NomeFicha, "urlFicha": url_imagem, "idTema": Tema
   }));
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
