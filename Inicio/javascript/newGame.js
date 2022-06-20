@@ -74,9 +74,8 @@ async function carregarTabuleiro() {
 connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
     document.getElementById("jogador1").innerText = jogador1['nickName'];
     document.getElementById("jogador2").innerText = jogador2['nickName'];
-    imgTabuleiro = dadosPatrocinador.tabuleiro;
     console.log(dadosPatrocinador)
-    document.getElementById('tabJogo').setAttribute('background', imgTabuleiro);
+    document.getElementById('tabJogo').setAttribute('background', dadosPatrocinador.tabuleiro);
 });
 
 
