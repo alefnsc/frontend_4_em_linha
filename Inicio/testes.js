@@ -3,7 +3,7 @@ function PostLogin() {
     var senha = document.getElementById('senha').value;  
 
     const xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "https://localhost:44347/api​/Usuario​/Validacao");
+    xhttp.open("POST", "https://localhost:5001/api​/Usuario​/Validacao");
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
     xhttp.send(JSON.stringify({ 

@@ -35,14 +35,16 @@
     }
 
     .playerAction2:hover {
-        background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png");
+        background-color: #0d0179;
         background-size: 98px 100px;
+        background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png");
         
     }
 
     .playerAction1:hover {
-        background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");
+        background-color: #790101;
         background-size: 98px 100px;
+        background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");
     }
 
     #screen {
@@ -60,6 +62,7 @@
         width: 700px;
         height: 600px;
         background-size: auto;
+        background-color:#2c3e50;
         background-image: url("https://cdn.ome.lt/42GZQPInUNFKS4wAkk1_s6yViKU=/1200x630/smart/extras/conteudos/fortnite-x-marvel-zero-war-announcement-article-card_S0F5i0s.jpg");
     }
 
@@ -91,14 +94,15 @@
     }
 
     .red {
-        background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");
+        background-color: #790101;
         background-size: 98px 100px;
+        background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");
     }
 
     .blue {
-        background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png");
+        background-color: #0d0179;
         background-size: 98px 100px;
-        
+        background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png"); 
     }
     #button_game_back {
     width: 200px;

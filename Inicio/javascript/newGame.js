@@ -5,11 +5,14 @@ const tabJog = document.getElementById('vezJogador')
 const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
+const imgTabuleiro = '';
 
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").withAutomaticReconnect().build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").withAutomaticReconnect().build();
 var campos = []
 var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
+
+const dadosPatrocinadorImagens = null
 
 function voltar() {
     starttimer('STOP', 0)
@@ -70,6 +73,8 @@ async function carregarTabuleiro() {
 
     await connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0);
     await connection.invoke('SolicitarDadosPartida', connection.connectionId);
+
+
 }
 
 connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
@@ -78,7 +83,39 @@ connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
     console.log(jogador1);
     console.log(jogador2);
     console.log(dadosPatrocinador);
+
+    dadosPatrocinadorImagens = dadosPatrocinador;
 });
+
+function atualizaImagens() {
+    listaTabela = document.getElementsByClassName("tabelaPrincipal");
+    imagemTabela = dadosPatrocinadorImagens.tabuleiro;
+    changeBackground(listaTabela, imagemTabela);
+
+    listaPecaRed = document.getElementsByClassName("red");
+    imagemPecaRed = dadosPatrocinadorImagens.ficha1;
+    changeBackground(listaPecaRed, imagemPecaRed);
+    listaPecaRedHover = document.getElementsByClassName("playerAction1:hover");
+    imagemPecaRedHover = dadosPatrocinadorImagens.ficha1;
+    changeBackground(listaPecaRedHover, imagemPecaRedHover);
+
+    listaPecaBlue = document.getElementsByClassName("blue");
+    imagemPecaBlue = dadosPatrocinadorImagens.ficha2;
+    changeBackground(imagemPecaBlue, imagemPecaBlue);
+    listaPecaBlueHover = document.getElementsByClassName("playerAction2:hover");
+    imagemPecaBlueHover = dadosPatrocinadorImagens.ficha2;
+    changeBackground(listaPecaBlueHover, imagemPecaBlueHover);
+
+    document.getElementById("img_patrocinador").style.backgroundImage = `url(${dadosPatrocinadorImagens.banner})`;
+}
+
+function changeBackground(lista, imagem){
+
+    for(var i=0, len=lista.length; i<len; i++)
+    {
+        lista[i].style["background-image"] = `url(${imagem})`;
+    }
+}
 
 async function disconnected(motivo) { // motivo 1 - desistiu; motivo 2 - timer zero; motivo 3 - cancelo looby
     await connection.invoke('DesconectarSala', connection.connectionId, motivo);
@@ -208,7 +245,7 @@ function mostraTabela(atual, player) {
    helper += "</tr></table></center>"
    tabHelper.innerHTML = helper
    //trazer array campos back
-   var html = "<center><table class='tabelaPrincipal' style='border: none;'>"
+   var html = "<center><table id='tabJogo' class='tabelaPrincipal' style='border: none;'>"
    for (let i = 0; i < tabuleiro / largura; i++) {
        html += "<tr>"
        for (let j = 0; j < tabuleiro / altura; j++) {
@@ -228,6 +265,8 @@ function mostraTabela(atual, player) {
    }
    html += "</table></center>"
    screen.innerHTML = html
+
+   atualizaImagens();
 
    if (atual != -1) {
        let deslocar = Math.floor(atual / largura) * 100
