@@ -5,6 +5,7 @@ const tabJog = document.getElementById('vezJogador')
 const largura = 7
 const altura = 6
 const tabuleiro = altura * largura
+const imgTabuleiro = '';
 
 const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").withAutomaticReconnect().build();
 var campos = []
@@ -207,7 +208,7 @@ function mostraTabela(atual, player) {
    helper += "</tr></table></center>"
    tabHelper.innerHTML = helper
    //trazer array campos back
-   var html = "<center><table class='tabelaPrincipal' style='border: none;'>"
+   var html = "<center><table id='tabJogo' class='tabelaPrincipal' style='border: none;'>"
    for (let i = 0; i < tabuleiro / largura; i++) {
        html += "<tr>"
        for (let j = 0; j < tabuleiro / altura; j++) {
