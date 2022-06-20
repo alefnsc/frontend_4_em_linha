@@ -1,6 +1,6 @@
 function loadTable() {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://localhost:5001/api/Patrocinador");
+    xhttp.open("GET", "https://four-line.herokuapp.com/api/Patrocinador");
     xhttp.send();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -117,7 +117,7 @@ function userCreate(url_imagem, email, web, celular, nome) {
    //alert()
     
     const xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "https://localhost:5001/api/Patrocinador/");
+    xhttp.open("POST", "https://four-line.herokuapp.com/api/Patrocinador/");
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify({ 
       "nome": Nome, "email": Email,"urlLogo": UrlLogo, "website": Website, "celular": Celular
@@ -160,7 +160,7 @@ function userDelete(id) {
   }).then((result) => {
     if (result.isConfirmed) {
       const xhttp = new XMLHttpRequest();
-      xhttp.open("DELETE", "https://localhost:5001/api/Patrocinador/"+id);
+      xhttp.open("DELETE", "https://four-line.herokuapp.com/api/Patrocinador/"+id);
       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhttp.send(JSON.stringify({ 
         "id": id
@@ -195,7 +195,7 @@ function userDelete(id) {
 function showUserEditBox(id) {
   console.log(id);
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://localhost:5001/api/Patrocinador/"+id);
+  xhttp.open("GET", "https://four-line.herokuapp.com/api/Patrocinador/"+id);
   xhttp.send();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -239,7 +239,7 @@ function userEdit(url_imagem) {
   const urlLogo = url_imagem;
     
   const xhttp = new XMLHttpRequest();
-  xhttp.open("PUT", "https://localhost:5001/api/Patrocinador/");
+  xhttp.open("PUT", "https://four-line.herokuapp.com/api/Patrocinador/");
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify({ 
     "id": id, "nome": nome, "website": website, "email": email, "celular": celular, 

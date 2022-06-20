@@ -1,6 +1,6 @@
 function loadTable() {
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://localhost:5001/api/Ficha/"); //ajustar para receber a lista de fichas (AJUSTAR NOME DE PARAMETROS )
+  xhttp.open("GET", "https://four-line.herokuapp.com/api/Ficha/"); //ajustar para receber a lista de fichas (AJUSTAR NOME DE PARAMETROS )
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -25,7 +25,7 @@ loadTable();
 function buscarNomeTema(id) {
   console.log(id);
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://localhost:5001/api/Tema/" + id);
+  xhttp.open("GET", "https://four-line.herokuapp.com/api/Tema/" + id);
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -56,7 +56,7 @@ function showUserCreateBox() {
     focusConfirm: false,
     didOpen: () => {
       const xhttp = new XMLHttpRequest();
-      xhttp.open("GET", "https://localhost:5001/api/Tema/"); //url de get tema
+      xhttp.open("GET", "https://four-line.herokuapp.com/api/Tema/"); //url de get tema
       xhttp.send();
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -140,7 +140,7 @@ function userCreate(url_imagem, img, idTema) {
   const Tema = idTema;
 
   const xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "https://localhost:5001/api/Ficha/");  //url de post ficha
+  xhttp.open("POST", "https://four-line.herokuapp.com/api/Ficha/");  //url de post ficha
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify({
     "nome": name, "urlFicha": image, "idTema": Tema
@@ -180,7 +180,7 @@ function userDelete(id) {
   }).then((result) => {
     if (result.isConfirmed) {
       const xhttp = new XMLHttpRequest();
-      xhttp.open("DELETE", "https://localhost:5001/api/Ficha/" + id); //url delete peca (Id no json)
+      xhttp.open("DELETE", "https://four-line.herokuapp.com/api/Ficha/" + id); //url delete peca (Id no json)
       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhttp.send(JSON.stringify({
         "id": id
@@ -211,7 +211,7 @@ function userDelete(id) {
 function showUserEditBox(id) {
   console.log(id);
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://localhost:5001/api/Ficha/" + id); //url de get Ficha especifica através de Id
+  xhttp.open("GET", "https://four-line.herokuapp.com/api/Ficha/" + id); //url de get Ficha especifica através de Id
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -242,7 +242,7 @@ function showUserEditBox(id) {
         focusConfirm: false,
         didOpen: () => {
           const xhttp = new XMLHttpRequest();
-          xhttp.open("GET", "https://localhost:5001/api/Tema/"); //url get tema
+          xhttp.open("GET", "https://four-line.herokuapp.com/api/Tema/"); //url get tema
           xhttp.send();
           xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -276,7 +276,7 @@ function userEdit(url_imagem) {
   const theme = document.getElementById("theme").value;
 
   const xhttp = new XMLHttpRequest();
-  xhttp.open("PUT", "https://localhost:5001/api/Ficha/");    //url de update fichas
+  xhttp.open("PUT", "https://four-line.herokuapp.com/api/Ficha/");    //url de update fichas
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify({
     "id": id, "nome": nome, "urlFicha": image, "idTema": theme
