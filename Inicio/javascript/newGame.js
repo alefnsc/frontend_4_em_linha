@@ -7,7 +7,7 @@ const altura = 6
 const tabuleiro = altura * largura
 const imgTabuleiro = '';
 
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").withAutomaticReconnect().build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").withAutomaticReconnect().build();
 var campos = []
 var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
@@ -74,7 +74,7 @@ async function carregarTabuleiro() {
     await connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0);
     await connection.invoke('SolicitarDadosPartida', connection.connectionId);
 
-    atualizaImagens();
+
 }
 
 connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
@@ -228,6 +228,8 @@ function mostraTabela(atual, player) {
    }
    html += "</table></center>"
    screen.innerHTML = html
+
+   atualizaImagens();
 
    if (atual != -1) {
        let deslocar = Math.floor(atual / largura) * 100
