@@ -35,9 +35,13 @@ xhttp.open("GET", "https://localhost:5001/api/Patrocinador");
         const setImage = () => {
           var object = objects[counter];
           var urlImagem = object['urlLogo'];
-          console.log(urlImagem);
+          var nomePat = object['nome'];
+          var website = object['website'];
+          document.getElementById("patrocinadores").innerHTML =  "<a href='"+website+"' style='font-size: 72px; text-decoration: none'>"+ nomePat + "</a>";
           document.getElementById("carousel-image").src = urlImagem;
-          document.getElementById("patrocinadores").textContent = "Patrocinadores";
+
+
+
           counter = counter + 1 ;
           counter = (counter+1)  %  objects.length;
         }
