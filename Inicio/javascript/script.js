@@ -53,8 +53,9 @@ function PostLogin() {
         }
         else {
             const objects = JSON.parse(this.responseText);
-            console.log(objects)
-            Swal.fire(objects['message']);
+            console.log()
+            if (objects['message']) 
+            Swal.fire(objects['message'])
         }
     }
 }
