@@ -239,7 +239,7 @@ function mostraTabela(atual, player) {
             campos = retorno
             vez = vezdequem
             mostraTabela(ultimo,player)
-            starttimer('START', player)
+            starttimer('START', vezdequem)
 
             if (encerrada != 0 && encerrada != 3)
             {
@@ -301,25 +301,25 @@ function mostraTabela(atual, player) {
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
-		var disp;
-		var sec = 0;
-		var id = null;
+var disp;
+var sec = 0;
+var id = null;
 
-		var ctx = new AudioContext();
-		var vol = ctx.createGain();
-		vol.gain.value = 0.2;
-		vol.connect(ctx.destination);
+var ctx = new AudioContext();
+var vol = ctx.createGain();
+vol.gain.value = 0.2;
+vol.connect(ctx.destination);
 
-		function play(n) {
-			for (var i = 0; i < n; i++) {
-				var osc = ctx.createOscillator();
-				osc.type = 'square';
-				osc.frequency.value = 2000;
-				osc.connect(vol);
-				osc.start(ctx.currentTime + 0.00 + i * 0.1);
-				osc.stop( ctx.currentTime + 0.05 + i * 0.1);
-			}
-		}
+function play(n) {
+    for (var i = 0; i < n; i++) {
+        var osc = ctx.createOscillator();
+        osc.type = 'square';
+        osc.frequency.value = 2000;
+        osc.connect(vol);
+        osc.start(ctx.currentTime + 0.00 + i * 0.1);
+        osc.stop( ctx.currentTime + 0.05 + i * 0.1);
+    }
+}
 
 function starttimer(acao, vezPlayer) {
     play(2);
