@@ -12,7 +12,7 @@ var campos = []
 var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
 
-const dadosPatrocinadorImagens = null
+var dadosPatrocinadorImagens = null;
 
 function voltar() {
     starttimer('STOP', 0)
@@ -56,6 +56,7 @@ async function start() {
         await connection.start();
         connection.invoke('ConectarSala',connection.connectionId, nomeUsuario, idUsuario)
         console.log("SignalR Connected.");
+
     } catch (err) {
         console.log(err);
         setTimeout(start, 5000);
@@ -73,47 +74,55 @@ async function carregarTabuleiro() {
 
     await connection.invoke('DistribuiArray',campos,1,1,null,null,connection.connectionId,0);
     await connection.invoke('SolicitarDadosPartida', connection.connectionId);
-
-
+    atualizaImagens();
 }
 
 connection.on("obterDadosPartida", (jogador1, jogador2, dadosPatrocinador) => {
     document.getElementById("jogador1").innerText = jogador1['nickName'];
     document.getElementById("jogador2").innerText = jogador2['nickName'];
-    console.log(jogador1);
-    console.log(jogador2);
-    console.log(dadosPatrocinador);
+    console.log(dadosPatrocinador)
+    window.sessionStorage.setItem("tabuleiro", dadosPatrocinador.tabuleiro); 
+    window.sessionStorage.setItem("ficha1", dadosPatrocinador.ficha1); 
+    window.sessionStorage.setItem("ficha2", dadosPatrocinador.ficha2); 
+    window.sessionStorage.setItem("banner", dadosPatrocinador.banner); 
+    window.sessionStorage.setItem("url", dadosPatrocinador.url); 
 
-    dadosPatrocinadorImagens = dadosPatrocinador;
+
 });
 
 function atualizaImagens() {
+
     listaTabela = document.getElementsByClassName("tabelaPrincipal");
-    imagemTabela = dadosPatrocinadorImagens.tabuleiro;
+    imagemTabela = window.sessionStorage.getItem("tabuleiro");
     changeBackground(listaTabela, imagemTabela);
 
     listaPecaRed = document.getElementsByClassName("red");
-    imagemPecaRed = dadosPatrocinadorImagens.ficha1;
+    imagemPecaRed = window.sessionStorage.getItem("ficha1");
     changeBackground(listaPecaRed, imagemPecaRed);
-    listaPecaRedHover = document.getElementsByClassName("playerAction1:hover");
-    imagemPecaRedHover = dadosPatrocinadorImagens.ficha1;
-    changeBackground(listaPecaRedHover, imagemPecaRedHover);
+    
+    /*listaPecaRedHover = document.getElementsByClassName("playerAction1:hover");
+    imagemPecaRedHover = window.sessionStorage.getItem("ficha1");
+    changeBackground(listaPecaRedHover, imagemPecaRedHover);*/
 
     listaPecaBlue = document.getElementsByClassName("blue");
-    imagemPecaBlue = dadosPatrocinadorImagens.ficha2;
-    changeBackground(imagemPecaBlue, imagemPecaBlue);
-    listaPecaBlueHover = document.getElementsByClassName("playerAction2:hover");
-    imagemPecaBlueHover = dadosPatrocinadorImagens.ficha2;
-    changeBackground(listaPecaBlueHover, imagemPecaBlueHover);
+    imagemPecaBlue = window.sessionStorage.getItem("ficha2");
+    changeBackground(listaPecaBlue, imagemPecaBlue);
 
-    document.getElementById("img_patrocinador").style.backgroundImage = `url(${dadosPatrocinadorImagens.banner})`;
+   /* listaPecaBlueHover = document.getElementsByClassName("playerAction2:hover");
+    imagemPecaBlueHover = window.sessionStorage.getItem("ficha2");
+    changeBackground(listaPecaBlueHover, imagemPecaBlueHover);*/
+    var imgPat = window.sessionStorage.getItem("banner");
+    var urlPat = window.sessionStorage.getItem("url");
+    //console.log(imgPat);
+    document.getElementById('urlPat').href = urlPat;
+    document.getElementById('imgPat').src = imgPat;
 }
 
 function changeBackground(lista, imagem){
 
     for(var i=0, len=lista.length; i<len; i++)
     {
-        lista[i].style["background-image"] = `url(${imagem})`;
+        lista[i].style["background-image"] = `url('${imagem}')`;
     }
 }
 
@@ -183,14 +192,15 @@ function marcar(player, X) {
             var Y = altura - (i + 1);
             connection.invoke('DistribuiArray',campos,ultimoDaAltura,player == 1 ? 2 : 1,X,Y,connection.connectionId,0)
             
-
+            
             mostraTabela(ultimoDaAltura, player == 1 ? 2 : 1);
+            
             return false
         }
     }
+    atualizaImagens();
 }
 function mostraTabela(atual, player) {
-
     if(vez == connection.connectionId){
         tabJog.innerHTML =  'Vez do adversário '
         }
@@ -198,7 +208,7 @@ function mostraTabela(atual, player) {
         tabJog.innerHTML =  'Sua vez'
     }
    //Marcador ficha
-   var helper = "<center><table style='border: none;' id='PlayerActionTable'><tr>";
+   var helper = "<center><table onload='atualizaImagens();' style='border: none;' id='PlayerActionTable'><tr>";
 
    for (let i = 0; i < largura; i++) {
        helper += "<td class='playerActionTd'>"
@@ -208,7 +218,7 @@ function mostraTabela(atual, player) {
    helper += "</tr></table></center>"
    tabHelper.innerHTML = helper
    //trazer array campos back
-   var html = "<center><table id='tabJogo' class='tabelaPrincipal' style='border: none;'>"
+   var html = "<center><table onload='atualizaImagens();' id='tabJogo' class='tabelaPrincipal' style='border: none;'>"
    for (let i = 0; i < tabuleiro / largura; i++) {
        html += "<tr>"
        for (let j = 0; j < tabuleiro / altura; j++) {
@@ -229,12 +239,12 @@ function mostraTabela(atual, player) {
    html += "</table></center>"
    screen.innerHTML = html
 
-   atualizaImagens();
 
    if (atual != -1) {
        let deslocar = Math.floor(atual / largura) * 100
        document.getElementById(atual).setAttribute("style", "transform: translateY(-" + deslocar + "px);animation: peca 2s forwards'")
    }
+   atualizaImagens();
 }
 
         connection.on("DistribuiArray", (retorno, ultimo, player, vezdequem, encerrada) => {

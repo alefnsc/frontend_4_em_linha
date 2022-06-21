@@ -23,10 +23,10 @@
     <title>4 em linha</title>
 </head>
 
-<body style="margin: 0 auto;" onload="carregarTabuleiro()">
+<body style="margin: 0 auto;" onload="carregarTabuleiro();">
     <audio src="./wav/win.wav"></audio>
     <audio src="./wav/loss.wav"></audio>
-    <nav style="margin-bottom: 60px; " class="navbar navbar-dark bg-mynav">
+    <nav style="margin-bottom: 15px; " class="navbar navbar-dark bg-mynav">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">4Lines</a>
             <button onclick="javascript: voltar();" for="click" class="click-me">Voltar para o saguão</label>
@@ -36,41 +36,33 @@
         <table style="width: 100%; border: none; background: none;">
             <tr>
                 <td>
-                    <div style=" margin-top: 60px;  display: block; margin: 0 auto; text-align: center;"
+                    <div style=" display: block; margin: 0 auto; text-align: center;"
                         class="container">
                         <h1 id="vezJogador"></h1>
                     </div>
                     <center>
-                        <div class="container" style="max-width: 700px; padding: 20px;">
+                        <div class="container" style="max-width: 700px;">
                             <hr>
 
                             <div id="disp" style="font-size:45px;text-align:center;">15</div>
-                            <!-- <div style="position:absolute;left:10px;top:10px;">
-                                <button id="start" onclick="starttimer();" style="width:150px;font-size:30px;">START</button>
-                            </div> -->
-
-                            <!-- <div align="center" class="progress" id="blips">
-                                <div style="padding: 10px;" class="progress-bar" role="progressbar">
-                                    <span class="sr-only"></span>
-                                </div>
-                            </div> -->
-
                         </div>
                     </center>
                     <div id="helper" style="display: block; margin: 0 auto; text-align: center;"></div>
                     <div id="screen" style="border: none; display: block; margin: 0 auto; text-align: center;"></div>
-                    <div style="border: none; display: block; margin: 0 auto; text-align: center; padding-top: 10px;">
-                        <h3><span id="jogador1"></span> X <span id="jogador2"></span></h3>
-                    </div>
+
                 </td>
 
                 <td>
 
                     <div style="display: block; margin: 0 auto;  text-align: center;">
-                        <a href="https://www.marvel.com/" target="_blank"><img
+                        <a id="urlPat" href="https://www.marvel.com/" target="_blank"><img
                                 style="margin-bottom: 60px; border: none; max-width: 500px; width: 100%; height: auto;"
-                                id="img_patrocinador"
-                                src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2019/08/cropped-kevin-feige-is-now-planning-for-mcu-films-through-2025-avengers-4-title-will-speak-to-the-heart-of-the-story-social-1.jpg"></a>
+                                id="imgPat"
+                                src="https://scpa.org.br/wp-content/uploads/2021/05/anuncie-aqui_SW-02-1024x1024.png"></a>
+                    </div>
+                    <br>
+                    <div style="border: none; display: block; margin: 0 auto; text-align: center; padding-top: 10px;">
+                        <h3><span id="jogador1"></span> X <span id="jogador2"></span></h3>
                     </div>
 
                 </td>
