@@ -7,14 +7,13 @@ const altura = 6
 const tabuleiro = altura * largura
 const imgTabuleiro = '';
 
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/jogo").withAutomaticReconnect().build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/jogo").withAutomaticReconnect().build();
 var campos = []
 var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
 
 var dadosPatrocinadorImagens = null;
 function voltar() {
-    starttimer('STOP', 0)
     Swal.fire({
         title: 'Tem certeza?',
         text: "A partida será contabilizada como derrota!",
