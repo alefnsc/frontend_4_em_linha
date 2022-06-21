@@ -2,7 +2,7 @@ loadCarrossel();
 
 function loadCarrossel() {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://localhost:44347/api/Patrocinador");
+    xhttp.open("GET", "https://four-line.herokuapp.com/api/Patrocinador");
     xhttp.send();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -56,7 +56,7 @@ function loadCarrossel() {
 function loadCarrossel() {
 const xhttp = new XMLHttpRequest();
     
-xhttp.open("GET", "https://localhost:44347/api/Patrocinador");
+xhttp.open("GET", "https://four-line.herokuapp.com/api/Patrocinador");
     xhttp.send();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
