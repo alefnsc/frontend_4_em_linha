@@ -7,7 +7,7 @@ const altura = 6
 const tabuleiro = altura * largura
 const imgTabuleiro = '';
 
-const connection = new signalR.HubConnectionBuilder().withUrl("https://four-line.herokuapp.com/jogo").withAutomaticReconnect().build();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://api-four-line.azurewebsites.net/jogo").withAutomaticReconnect().build();
 var campos = []
 var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
