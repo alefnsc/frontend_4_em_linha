@@ -4,7 +4,7 @@ function GetPartidas() {
     if (id != null) {
         const xhttp = new XMLHttpRequest();
         
-        xhttp.open("GET", "https://four-line.herokuapp.com/api/Usuario/" + id);
+        xhttp.open("GET", "https://localhost:5001/api/Usuario/" + id);
         xhttp.send();
     
         xhttp.onreadystatechange = function() {
