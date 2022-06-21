@@ -68,6 +68,7 @@ function PostCadastro() {
         }
         else {
             const objects = JSON.parse(this.responseText);
+            if (objects['message'])
             Swal.fire(objects['message']);
         }
     }
