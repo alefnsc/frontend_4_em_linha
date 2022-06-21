@@ -56,11 +56,7 @@ function loadCarrossel() {
 function loadCarrossel() {
 const xhttp = new XMLHttpRequest();
     
-<<<<<<< HEAD
 xhttp.open("GET", "https://api-four-line.azurewebsites.net/api/Patrocinador");
-=======
-xhttp.open("GET", "https://localhost:5001/api/Patrocinador");
->>>>>>> 599135dfc2b5290208288a012a483121311b2ac4
     xhttp.send();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
