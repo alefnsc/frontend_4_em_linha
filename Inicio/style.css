@@ -32,6 +32,7 @@ main {
     max-width: 500px;
     min-height: 100vh;
     padding: clamp(35px, 8%, 70px);
+    background-color: #2c3e50;
 }
 
 .cadastro {
