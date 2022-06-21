@@ -13,6 +13,7 @@ var vez = 0
 const nomeUsuario = window.sessionStorage.getItem('nomeUsuario');
 
 var dadosPatrocinadorImagens = null;
+
 function voltar() {
     starttimer('STOP', 0)
     Swal.fire({
@@ -107,9 +108,9 @@ function atualizaImagens() {
     imagemPecaBlue = window.sessionStorage.getItem("ficha2");
     changeBackground(listaPecaBlue, imagemPecaBlue);
 
-    listaPecaBlueHover = document.getElementsByClassName("playerAction2:hover");
+   /* listaPecaBlueHover = document.getElementsByClassName("playerAction2:hover");
     imagemPecaBlueHover = window.sessionStorage.getItem("ficha2");
-    /*changeBackground(listaPecaBlueHover, imagemPecaBlueHover);*/
+    changeBackground(listaPecaBlueHover, imagemPecaBlueHover);*/
     var imgPat = window.sessionStorage.getItem("banner");
     var urlPat = window.sessionStorage.getItem("url");
     //console.log(imgPat);
@@ -197,29 +198,8 @@ function marcar(player, X) {
             return false
         }
     }
+    atualizaImagens();
 }
-
-function attPeca(playerNum, indice) {
-    var teste = document.getElementsByClassName('playerAction'+playerNum);
-    var img = window.sessionStorage.getItem('ficha'+playerNum);
-    for(var i=0, len=teste.length; i<len; i++)
-    {
-        if (indice === i)
-        teste[i].style["background-image"] = `url('${img}')`;
-        else
-            teste[i].style["background-image"] = '';
-    }
-}
-
-function limpaPeca(playerNum) {
-    var teste = document.getElementsByClassName('playerAction'+playerNum);
-    var img = window.sessionStorage.getItem('ficha'+playerNum);
-    for(var i=0, len=teste.length; i<len; i++)
-    {
-            teste[i].style["background-image"] = '';
-    }
-}
-
 function mostraTabela(atual, player) {
     if(vez == connection.connectionId){
         tabJog.innerHTML =  'Vez do adversário '
@@ -232,7 +212,7 @@ function mostraTabela(atual, player) {
 
    for (let i = 0; i < largura; i++) {
        helper += "<td class='playerActionTd'>"
-       helper += "<div class='playerAction playerAction" + player + "' onmouseout='limpaPeca("+player+")' onmouseover='attPeca("+player+","+ i+")' onClick='marcar(" + player + "," + i + ")'></div>"
+       helper += "<div class='playerAction playerAction" + player + "' onClick='marcar(" + player + "," + i + ")'></div>"
        helper += "</td>"
    }
    helper += "</tr></table></center>"

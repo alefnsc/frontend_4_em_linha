@@ -35,16 +35,16 @@
     }
 
     .playerAction2:hover {
-        background-color: #0d0179;
+        /*background-color: #0d0179;*/
         background-size: 98px 100px;
-        background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png");
+        /*background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png");*/
         
     }
 
     .playerAction1:hover {
-        background-color: #790101;
+        /*background-color: #790101;*/
         background-size: 98px 100px;
-        background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");
+       /* background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");*/
     }
 
     #screen {
@@ -94,15 +94,13 @@
     }
 
     .red {
-        background-color: #790101;
         background-size: 98px 100px;
-        background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");
+        /*background-image: url("https://static3.tcdn.com.br/img/img_prod/460977/capacete_eletronico_homem_de_ferro_iron_man_marvel_legends_series_hasbro_20589_1_20201211173552.jpg");*/
     }
 
     .blue {
-        background-color: #0d0179;
         background-size: 98px 100px;
-        background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png"); 
+        /*background-image: url("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Imagem-Escudo-Capit%C3%A3o-Am%C3%A9rica-PNG.png"); */
     }
     #button_game_back {
     width: 200px;
