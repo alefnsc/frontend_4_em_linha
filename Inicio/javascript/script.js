@@ -48,13 +48,11 @@ function PostLogin() {
                 window.location.href = "../Crud/index.html";
             }
             else {
-                window.location.href = "saguao.html";
+                window.location.href = "./saguao.html";
             }
         }
         else {
             const objects = JSON.parse(this.responseText);
-            console.log()
-            if (objects['message']) 
             Swal.fire(objects['message'])
         }
     }

@@ -36,13 +36,14 @@
   <nav class="navbar navbar-dark bg-mynav" style="margin-bottom: 50px; ">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">4Lines</a>
-      <button onclick="javascript: sair();"  for="click" class="click-me-exit">Sair</label>
+      <button onclick="javascript: sair();" for="click" class="click-me-exit">Sair</label>
     </div>
   </nav>
   <center>
     <div class="container" style="padding: 20px; margin:0 auto; max-width: 800px; width:100%; display: block;"
       class="py-5 text-center">
-      <img class="d-block mx-auto mb-4" onclick="location.href='./saguao.html'" src="./images/logo.png" alt="Imagem não encontrada" width="150" height="150">
+      <img class="d-block mx-auto mb-4" onclick="location.href='./saguao.html'" src="./images/logo.png"
+        alt="Imagem não encontrada" width="150" height="150">
       <h2>4Lines</h2>
 
     </div>
@@ -61,31 +62,44 @@
               Jogo</button>
           </div>
           <div class="p-2 bd-highlight">
-            <button type="button" class="btn btn-secondary" onclick="location.href='./patrocinadores.html'">Patrocinadores</button>
+            <button type="button" class="btn btn-secondary"
+              onclick="location.href='./patrocinadores.html'">Patrocinadores</button>
           </div>
         </div>
       </div>
+      <table align="center">
+        <tr>
+          <td> <font style="font-weight: 300; text-align: left; font-size: 48px;">Bem vindo,</font><br><font style=" font-weight: 3000; text-align: left; font-size: 72px;" id="nomeUsuario"></font>
+          </td>
+          <td align="right" style="padding-left: 120px; margin-top: 120px;">
+            <div align="right" style="padding-left: 30px;" class="container">
+              <p class="lead" style="font-weight: 1000; text-align: right; font-size: 22px;">Jogue agora mesmo!!!</p>
+              <button align="right" style="margin-right: 0px;" id="botaoJogar" value="Procurar partida" class="click-me"
+                onclick="start()">Procurar partida</button>
+              <br>
+              <button id="botaoCancelar" value="Cancelar" class="click-me-exit"
+                onclick="disconnected('3')">Cancelar</button>
+              <br>
+            </div>
+          </td>
+        </tr>
+      </table>
 
-
-      <div align="left" style="padding-left: 30px; " class="container">
-        <font class="lead" style="font-size:30px;">Bem vindo, <b><div id="nomeUsuario"></div></b></font>
-
-      </div>
-      <div align="right" style="padding-left: 30px;" class="container">
-        <p class="lead" style="font-weight: 1000; text-align: right; font-size: 22px;">Jogue agora mesmo!!!</p>
-        <button align="right" style="margin-right: 0px;" id="botaoJogar" value="Procurar partida"
-          class="click-me" onclick="start()">Procurar partida</button>
-          <br>
-          <button id="botaoCancelar" value="Cancelar" class="click-me-exit" onclick="disconnected('3')">Cancelar</button>
-          <br>
-      </div>
 
       <div align="left" style="padding-left: 30px; margin-top: 10px;" class="container">
-        <font style="color:#176801; font-size: 26px">Win:</font> <b style="font-size: 26px"><div  id="numeroVitorias"></div></b>
-        <font style="color:#6b0101; font-size: 26px">Lose:</font> <b style="font-size: 26px"><div id="numeroDerrotas"></div></b>
-        <font style="color:#684c01; font-size: 26px">Draw:</font> <b style="font-size: 26px"><div id="numeroEmpates"></div></b>
-        <font style="color:#282f35; font-size: 26px">Total:</font> <b style="font-size: 26px"><div id="numeroPartidas"></div></b>
-      </div> 
+        <font style="color:#176801; font-size: 26px">Win:</font> <b style="font-size: 26px">
+          <div id="numeroVitorias"></div>
+        </b>
+        <font style="color:#6b0101; font-size: 26px">Lose:</font> <b style="font-size: 26px">
+          <div id="numeroDerrotas"></div>
+        </b>
+        <font style="color:#684c01; font-size: 26px">Draw:</font> <b style="font-size: 26px">
+          <div id="numeroEmpates"></div>
+        </b>
+        <font style="color:#282f35; font-size: 26px">Total:</font> <b style="font-size: 26px">
+          <div id="numeroPartidas"></div>
+        </b>
+      </div>
     </div>
 
 
