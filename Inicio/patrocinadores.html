@@ -1,130 +1,114 @@
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="pt-br">
 
-    <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="icon" type="imagem/png" href="images/icone.png" />
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script src="./javascript/jquery-3.6.0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <title>CRUD FROM API</title>
-  </head>
-<body style="margin: 0 auto; max-width: 800px; width:100%; background-color:bisque;">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./game.css">
+  <link rel="icon" type="imagem/png" href="images/icone.png" />
+  <script src="./javascript/script_cad.js" defer></script>
+  <script src="./javascript/newgame.js" defer></script>
+  <script src="./javascript/server.js" defer></script>
+  <script src="./javascript/saguao.js" defer></script>
+  <script src="./javascript/patrocinadores.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.17/signalr.js"></script>
 
-    <div id="carousel" class="carousel slide" data-ride="carousel">
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
+  <title>4 em Linha</title>
+</head>
+
+<body class="bg-light">
+  <nav class="navbar navbar-dark bg-mynav" style="margin-bottom: 50px; ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">4Lines</a>
+      <button onclick="javascript: sair();"  for="click" class="click-me-exit">Sair</label>
     </div>
-    <div class="container my-5 py-5">
-      <!-- Carousel wrapper -->
-      <div
-           id="carouselBasicExample"
-           class="carousel slide carousel-fade"
-           data-mdb-ride="carousel"
-           >
-        <!-- Indicators -->
-        <div class="carousel-indicators">
-          <button
-                  type="button"
-                  data-mdb-target="#carouselBasicExample"
-                  data-mdb-slide-to="0"
-                  class="active"
-                  aria-current="true"
-                  aria-label="Slide 1"
-                  ></button>
-          <button
-                  type="button"
-                  data-mdb-target="#carouselBasicExample"
-                  data-mdb-slide-to="1"
-                  aria-label="Slide 2"
-                  ></button>
-          <button
-                  type="button"
-                  data-mdb-target="#carouselBasicExample"
-                  data-mdb-slide-to="2"
-                  aria-label="Slide 3"
-                  ></button>
-        </div>
-    
-        <!-- Inner -->
-        <div class="carousel-inner">
-          <!-- Single item -->
-          <div class="carousel-item active">
-            <a href="https://mdbootstrap.com/">
-              <img
-                   src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(15).webp"
-                   class="d-block w-100"
-                   alt="Sunset Over the City"
-                   />
-              <div class="carousel-caption d-none d-md-block">
-                <h5>First slide label</h5>
-                <p>
-                  Nulla vitae elit libero, a pharetra augue mollis interdum.
-                </p>
-              </div>
-            </a>
+  </nav>
+  <center>
+    <div class="container" style="padding: 20px; margin:0 auto; max-width: 800px; width:100%; display: block;"
+      class="py-5 text-center">
+      <img class="d-block mx-auto mb-4" src="./images/logo.png" alt="Imagem não encontrada" width="72" height="72">
+      <h2>4Lines</h2>
+      <p class="lead">Jogue agora mesmo</p>
+    </div>
+
+
+    <div class="container"
+      style="padding: 20px; margin:0 auto; max-width: 800px; width:100%; background-color: #fff; border-radius: 10px;">
+
+      <div class="container" style="margin:0 auto; max-width: 800px; width:100%; display: block;">
+        <div class="d-flex bd-highlight mb-3">
+          <div class="p-2 bd-highlight">
+            <button type="button" class="btn btn-secondary" onclick="location.href='./saguao.html'">Início</button>
           </div>
-    
-          <!-- Single item -->
-          <div class="carousel-item">
-            <a href="https://tailwind-elements.com/">
-              <img
-                   src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp"
-                   class="d-block w-100"
-                   alt="Canyon at Nigh"
-                   />
-              <div class="carousel-caption d-none d-md-block">
-                <h5>Second slide label</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </a>
+          <div class="p-2 bd-highlight">
+            <button type="button" class="btn btn-secondary" onclick="location.href='#'">Perfil</button>
           </div>
-    
-          <!-- Single item -->
-          <div class="carousel-item">
-            <a href="https://mdbgo.com/">
-              <img
-                   src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(23).webp"
-                   class="d-block w-100"
-                   alt="Cliff Above a Stormy Sea"
-                   />
-              <div class="carousel-caption d-none d-md-block">
-                <h5>Third slide label</h5>
-                <p>
-                  Praesent commodo cursus magna, vel scelerisque nisl
-                  consectetur.
-                </p>
-              </div>
-            </a>
+          <div class="p-2 bd-highlight">
+            <button type="button" class="btn btn-secondary" onclick="location.href='./regras.html'">Regras do
+              Jogo</button>
+          </div>
+          <div class="p-2 bd-highlight">
+            <button type="button" class="btn btn-secondary" onclick="location.href='./patrocinadores.html'">Patrocinadores</button>
           </div>
         </div>
-        <!-- Inner -->
-    
-        <!-- Controls -->
-        <button
-                class="carousel-control-prev"
-                type="button"
-                data-mdb-target="#carouselBasicExample"
-                data-mdb-slide="prev"
-                >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button
-                class="carousel-control-next"
-                type="button"
-                data-mdb-target="#carouselBasicExample"
-                data-mdb-slide="next"
-                >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
       </div>
-      <!-- Carousel wrapper -->
-    
-    </div>
-<script src="./javascript/carrousel.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+
+      <div align="center" style=" padding-left: 30px;" class="container">
+        <div  class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img id ="carousel-image" class="d-block w-100" alt="Logo de patrocinador não disponível"src="https://scpa.org.br/wp-content/uploads/2021/05/anuncie-aqui_SW-02-1024x1024.png">
+              <p id="patrocinadores"></p>
+            </div>
+            </div>
+          </div>
+        <br>
+      </div>
+
+
+
+
+
+
+    <p style="font-size: 14px;">Grupo 7 © 2022 - Copyright - Todos os direitos reservados</p>
+  </center>
+
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+</body>
 
 </html>
+
+
