@@ -53,7 +53,7 @@
       style="padding: 20px; margin:0 auto; max-width: 800px; width:100%; background-color: #fff; border-radius: 10px;">
 
       <div class="container" style="margin:0 auto; max-width: 800px; width:100%; display: block;">
-        <div class="d-flex bd-highlight mb-3">
+        <div class="d-flex bd-highlight mb-3" style="margin:0 auto; max-width: 800px; width:100%; display: block;">
           <div class="p-2 bd-highlight">
             <button type="button" class="btn btn-secondary" onclick="location.href='./saguao.html'">Início</button>
           </div>
@@ -67,24 +67,20 @@
           </div>
         </div>
       </div>
-      <table align="center">
-        <tr>
-          <td> <font style="font-weight: 300; text-align: left; font-size: 36px;">Bem vindo,<br><font style=" font-weight: 3000; text-align: left; font-size: 68px; color:#282f35" id="nomeUsuario"></font>!!!</font>
-          </td>
-          <td align="right" style="padding-left: 120px; margin-top: 120px;">
-            <div align="right" style="padding-left: 30px;" class="container">
-              <p class="lead" style="font-weight: 300; text-align: center; font-size: 24px;">Jogue agora mesmo!!!</p>
-              <button align="right" style="margin-right: 0px;" id="botaoJogar" value="Procurar partida" class="click-me"
-                onclick="start()">Procurar partida</button>
-              <br>
-              <button id="botaoCancelar" value="Cancelar" class="click-me-exit"
-                onclick="disconnected('3')">Cancelar</button>
-              <br>
-            </div>
-          </td>
-        </tr>
-      </table>
+      <div class="container" align="center">
+        <font style="font-weight: 300; text-align: left; font-size: 36px;">Bem vindo,<br>
+          <font style=" font-weight: 3000; text-align: left; font-size: 68px; color:#282f35" id="nomeUsuario"></font>!!!
+        </font>
+      </div>
 
+      <div align="right" style="padding-left: 30px;" class="container">
+        <p class="lead" style="font-weight: 300; text-align: center; font-size: 24px;">Jogue agora mesmo!!!</p>
+        <button align="right" style="margin-right: 0px;" id="botaoJogar" value="Procurar partida" class="click-me"
+          onclick="start()">Procurar partida</button>
+        <br>
+        <button id="botaoCancelar" value="Cancelar" class="click-me-exit" onclick="disconnected('3')">Cancelar</button>
+        <br>
+      </div>
 
       <div align="center" style="margin-top: 10px;" class="container">
         <font style="color:#176801; font-size: 22px">VITÓRIAS:</font> <b style="font-size: 22px">
